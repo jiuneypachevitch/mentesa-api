@@ -1,0 +1,28 @@
+2022-09-10 10:34:21 error: uncaughtException: Cannot find module '@routes/auth.route'
+Require stack:
+- /home/acanuto/Development/gama-academy-project-mentesa-api/src/server.ts
+Error: Cannot find module '@routes/auth.route'
+Require stack:
+- /home/acanuto/Development/gama-academy-project-mentesa-api/src/server.ts
+    at Function.Module._resolveFilename (node:internal/modules/cjs/loader:956:15)
+    at Function.Module._resolveFilename.sharedData.moduleResolveFilenameHook.installedValue (/home/acanuto/Development/gama-academy-project-mentesa-api/node_modules/@cspotcode/source-map-support/source-map-support.js:811:30)
+    at Function.Module._resolveFilename (/home/acanuto/Development/gama-academy-project-mentesa-api/node_modules/tsconfig-paths/src/register.ts:115:36)
+    at Function.Module._load (node:internal/modules/cjs/loader:804:27)
+    at Module.require (node:internal/modules/cjs/loader:1028:19)
+    at require (node:internal/modules/cjs/helpers:102:18)
+    at Object.<anonymous> (/home/acanuto/Development/gama-academy-project-mentesa-api/src/server.ts:2:1)
+    at Module._compile (node:internal/modules/cjs/loader:1126:14)
+    at Module.m._compile (/home/acanuto/Development/gama-academy-project-mentesa-api/node_modules/ts-node/src/index.ts:1618:23)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+2022-09-10 10:34:56 error: uncaughtException: listen EADDRINUSE: address already in use :::3000
+Error: listen EADDRINUSE: address already in use :::3000
+    at Server.setupListenHandle [as _listen2] (node:net:1432:16)
+    at listenInCluster (node:net:1480:12)
+    at Server.listen (node:net:1568:7)
+    at Function.listen (/home/acanuto/Development/gama-academy-project-mentesa-api/node_modules/express/lib/application.js:635:24)
+    at App.listen (/home/acanuto/Development/gama-academy-project-mentesa-api/src/app.ts:28:14)
+    at Object.<anonymous> (/home/acanuto/Development/gama-academy-project-mentesa-api/src/server.ts:8:5)
+    at Module._compile (node:internal/modules/cjs/loader:1126:14)
+    at Module.m._compile (/home/acanuto/Development/gama-academy-project-mentesa-api/node_modules/ts-node/src/index.ts:1618:23)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1180:10)
+    at Object.require.extensions.<computed> [as .ts] (/home/acanuto/Development/gama-academy-project-mentesa-api/node_modules/ts-node/src/index.ts:1621:12)

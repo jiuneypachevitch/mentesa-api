@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": false,
+        "amount": 30
+    },
+    "auditLog": "/home/acanuto/Development/gama-academy-project-mentesa-api/src/logs/error/.e39a7247a6448fe6dd2523b483d859af5e22fc49-audit.json",
+    "files": [
+        {
+            "date": 1662820460959,
+            "name": "/home/acanuto/Development/gama-academy-project-mentesa-api/src/logs/error/2022-09-10.log",
+            "hash": "2c34dc1c812db29ec4eefd31f11a1c41cb5485e5b0e8fd080d3d4c9f101316cd"
+        }
+    ],
+    "hashType": "sha256"
+}
