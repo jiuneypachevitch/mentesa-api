@@ -50,7 +50,7 @@ enum Status {
 
 model User {
   id            Int       @id @default(autoincrement())
-  email         String    @db.VarChar(150)  @unique
+  email         String    @db.VarChar(100)  @unique
   password      String    @db.VarChar(100)
   role          Role      @default(ADMIN)
   createdAt     DateTime  @default(now())   @map("created_at")
@@ -66,33 +66,32 @@ model User {
 model Professional {
   id            Int       @id @default(autoincrement())
   name          String    @db.VarChar(150)
+  email         String    @db.VarChar(100)  @unique
   crp           String?   @db.VarChar(20)   @unique
   cellphone     String?   @db.VarChar(14)
-  approach      String?   @db.VarChar(30)
-  userId        Int       @unique           @map("user_id")
+  approach      String?   @db.VarChar(60)
   createdAt     DateTime  @default(now())   @map("created_at")
   updatedAt     DateTime  @updatedAt        @map("updated_at")
 
-  User          User      @relation(fields: [userId], references: [id])
+  User          User      @relation(fields: [email], references: [email], onUpdate: Cascade)
 
   Patient       Patient[]
 
   Schedule      Schedule[]
 
-  @@index([userId])
+  @@index([email])
   @@map("professionals")
 }
 
 model Patient {
   id              Int        @id @default(autoincrement())
-  name            String?    @db.VarChar(150)
-  cpf             String?    @db.VarChar(14)   @unique
-  email           String?    @db.VarChar(60)   @unique
-  gender          Gender?
-  cellphone       String?    @db.VarChar(15)
-  birthDate       DateTime?  @db.Date          @map("birth_date")
+  name            String     @db.VarChar(150)
+  cpf             String     @db.VarChar(14)   @unique
+  email           String     @db.VarChar(100)  @unique
+  gender          Gender
+  cellphone       String     @db.VarChar(15)
+  birthDate       DateTime   @db.Date          @map("birth_date")
   professionalId  Int                          @map("professional_id")
-  userId          Int        @unique           @map("user_id")
   active          Boolean    @default(true)
   createdAt       DateTime   @default(now())   @map("created_at")
   updatedAt       DateTime   @updatedAt        @map("updated_at")
@@ -101,18 +100,18 @@ model Patient {
 
   Professional        Professional             @relation(fields: [professionalId], references: [id])
 
-  User                User                     @relation(fields: [userId], references: [id])
+  User                User                     @relation(fields: [email], references: [email], onUpdate: Cascade)
 
   @@index([professionalId])
-  @@index([userId])
+  @@index([email])
   @@map("patients")
 }
 
 model Schedule {
   id              Int           @id @default(autoincrement())
+  sessionDate     DateTime                                      @map("session_date")
   status          Status        @default(PENDING)
-  sessionDate     DateTime      @db.Date                        @map("session_date")
-  type            Type
+  type            Type          @default(ONLINE)
   scheduleType    ScheduleType  @map("schedule_type")
   professionalId  Int           @map("professional_id")
   createdAt       DateTime      @default(now())                 @map("created_at")
@@ -142,6 +141,19 @@ model PatientsSchedule {
   @@map("patients_schedule")
 }
 
+model Resource {
+  id              Int          @id @default(autoincrement())
+  title           String       @db.VarChar(150)
+  category        String       @db.VarChar(30)
+  createdAt       DateTime     @default(now())                  @map("created_at")
+  updatedAt       DateTime     @updatedAt                       @map("updated_at")
+
+  Session         Session[]
+
+  @@unique([title, category])
+  @@map("resources")
+}
+
 model Session {
   id              Int          @id @default(autoincrement())
   subject         String       @db.VarChar(150)
@@ -157,16 +169,4 @@ model Session {
 
   @@index([scheduleId])
   @@map("sessions")
-}
-
-model Resource {
-  id              Int          @id @default(autoincrement())
-  title           String       @db.VarChar(150)
-  category        String       @db.VarChar(30)
-  createdAt       DateTime     @default(now())                 @map("created_at")
-  updatedAt       DateTime     @updatedAt                      @map("updated_at")
-
-  Session         Session[]
-
-  @@map("resources")
 }
