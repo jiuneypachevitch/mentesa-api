@@ -5,8 +5,11 @@ import express from 'express';
 import helmet from 'helmet';
 import hpp from 'hpp';
 import morgan from 'morgan';
+import swaggerUi from 'swagger-ui-express';
 import errorMiddleware from '@middlewares/error.middleware';
 import { logger, stream } from '@utils/logger';
+import { Routes } from './routes/auth.route';
+import { swaggerSpec } from '@docs/openapi';
 import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from '@config';
 
 class App {
@@ -14,12 +17,13 @@ class App {
   public env: string;
   public port: string | number;
 
-  constructor() {
+  constructor(routes: Routes[]) {
     this.app = express();
     this.env = NODE_ENV || 'development';
     this.port = PORT || 3000;
 
-    this.initializeRoute();
+    this.initializeRoutes(routes);
+    this.initializeSwagger();
     this.initializeMiddlewares();
     this.initializeErrorHandling();
   }
@@ -52,10 +56,14 @@ class App {
     this.app.use(errorMiddleware);
   }
 
-  private initializeRoute() {
-    this.app.use('/', (_, res) => {
-      res.send('API em execução');
+  private initializeRoutes(routes: Routes[]) {
+    routes.forEach(route => {
+      this.app.use('/', route.router);
     });
+  }
+
+  private initializeSwagger() {
+    this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
   }
 }
 
