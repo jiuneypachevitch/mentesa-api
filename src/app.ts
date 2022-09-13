@@ -8,9 +8,9 @@ import morgan from 'morgan';
 import swaggerUi from 'swagger-ui-express';
 import errorMiddleware from '@middlewares/error.middleware';
 import { logger, stream } from '@utils/logger';
-import { Routes } from './routes/auth.route';
 import { swaggerSpec } from '@docs/openapi';
 import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from '@config';
+import { Routes } from './interfaces/routes.interface';
 
 class App {
   public app: express.Application;

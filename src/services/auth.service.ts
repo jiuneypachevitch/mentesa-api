@@ -1,11 +1,11 @@
 import { hash } from 'bcrypt';
-import { PrismaClient } from '@prisma/client';
 import { CreateUserDto } from '@dtos/user.dto';
 import { HttpException } from '@exceptions/HttpException';
 import { isEmpty } from '@utils/util';
+import { client } from '@/prisma/client';
 
 class AuthService {
-  public user = new PrismaClient().user;
+  public user = client.user;
 
   public signup = async (userData: CreateUserDto) => {
     if (isEmpty(userData))
