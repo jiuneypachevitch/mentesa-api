@@ -1,7 +1,7 @@
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import express from 'express';
+import express, { ErrorRequestHandler, Request, Response, NextFunction } from 'express';
 import helmet from 'helmet';
 import hpp from 'hpp';
 import morgan from 'morgan';
@@ -21,11 +21,11 @@ class App {
     this.app = express();
     this.env = NODE_ENV || 'development';
     this.port = PORT || 3000;
-
-    this.initializeRoutes(routes);
     this.initializeSwagger();
-    this.initializeMiddlewares();
     this.initializeErrorHandling();
+    this.initializeMiddlewares();
+    this.initializeRoutes(routes);
+
   }
 
   public listen() {
@@ -50,10 +50,15 @@ class App {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(cookieParser());
+    /*this.app.use(
+        ((err: any, req: Request, res: Response, next: NextFunction) => {
+            console.log('ERROR Middleware', err);
+            next(err);
+        }) as ErrorRequesHandler );*/
   }
 
   private initializeErrorHandling() {
-    this.app.use(errorMiddleware);
+      this.app.use(errorMiddleware);
   }
 
   private initializeRoutes(routes: Routes[]) {

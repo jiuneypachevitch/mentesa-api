@@ -22,7 +22,7 @@ class AuthService {
       );
 
     const hashedPassword = await hash(userData.password, 8);
-    const createUserData = this.user.create({
+    const createUserData = await this.user.create({
       data: {
         email: userData.email,
         password: hashedPassword,
