@@ -22,10 +22,10 @@ class App {
     this.env = NODE_ENV || 'development';
     this.port = PORT || 3000;
 
-    this.initializeSwagger();
     this.initializeMiddlewares();
-    this.initializeErrorHandling();
     this.initializeRoutes(routes);
+    this.initializeSwagger();
+    this.initializeErrorHandling();
   }
 
   public listen() {
