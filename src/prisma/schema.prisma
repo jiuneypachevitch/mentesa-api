@@ -60,6 +60,8 @@ model User {
 
   Patient       Patient?
 
+  RefreshToken  RefreshToken?
+
   @@map("users")
 }
 
@@ -169,4 +171,13 @@ model Session {
 
   @@index([scheduleId])
   @@map("sessions")
+}
+
+model RefreshToken {
+  id              String       @id @default(uuid())
+  expiresIn       Int
+  userId          Int          @unique
+  user            User         @relation(fields: [userId], references: [id])
+
+  @@map("refresh_token")
 }
