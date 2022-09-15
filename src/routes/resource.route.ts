@@ -21,6 +21,7 @@ class ResourceRoute implements Routes {
             this.resourceController.create
         );
     this.router.route(`${this.path}/:resourceId`)
+        .get(this.resourceController.get)
         .patch(
             validationMiddleware(UpdateResourceDto, 'body'),
             this.resourceController.update

@@ -26,3 +26,5 @@ export class DeleteResourceIdDto {
     @IsNumber()
     id: number;
 }
+
+export class GetResourceIdDto extends DeleteResourceIdDto {}
