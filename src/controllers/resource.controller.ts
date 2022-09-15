@@ -13,7 +13,7 @@ class ResourceController {
 
       res.status(201).json({
         data: {
-          resource,
+          ...resource,
         },
         message: 'created',
       });
@@ -30,7 +30,7 @@ class ResourceController {
 
       res.status(202).json({
         data: {
-          resource,
+          ...resource,
         },
         message: 'updated',
       });
@@ -45,7 +45,7 @@ class ResourceController {
 
       res.status(200).json({
         data: {
-          resourceList,
+          ...resourceList,
         },
         message: 'listed',
       });
@@ -54,9 +54,25 @@ class ResourceController {
     }
   };
 
+  public get = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { resourceId } = req.params;
+      const resource = await this.resourceService.get({ id: +resourceId });
+      const result = resource ? { data: { ...resource }, message: 'listed'} : { message: 'Recurso não encontrado'};
+      res.status(200).json(result);
+      /*res.status(200).json({
+        data: {
+          resource,
+        },
+        message: 'listed',
+      });*/
+    } catch (error) {
+      next(error);
+    }
+  };
+
   public delete = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      //const resourceData: UpdateResourceDto = req.body;
       const { resourceId } = req.params;
       const resource = await this.resourceService.delete({ id: +resourceId });
 

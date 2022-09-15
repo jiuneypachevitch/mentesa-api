@@ -1,5 +1,5 @@
 import { hash } from 'bcrypt';
-import { CreateResourceDto, UpdateResourceIdDto, DeleteResourceIdDto }from '@dtos/resource.dto';
+import { CreateResourceDto, UpdateResourceIdDto, DeleteResourceIdDto, GetResourceIdDto }from '@dtos/resource.dto';
 import { HttpException } from '@exceptions/HttpException';
 import { PrismaException } from '@exceptions/PrismaException';
 import { isEmpty } from '@utils/util';
@@ -56,6 +56,25 @@ class ResourceService {
         });
 
         return listResourceData;
+    } catch (error) {
+        throw new PrismaException(error, 'Recurso');
+    }
+  };
+
+  public get = async (resourceId: GetResourceIdDto) => {
+    try {
+        const resourceData = await this.resource.findUnique({
+            where: {
+                id: resourceId.id
+            },
+            select: {
+                id: true,
+                title: true,
+                category: true,
+            }
+        });
+
+        return resourceData;
     } catch (error) {
         throw new PrismaException(error, 'Recurso');
     }
