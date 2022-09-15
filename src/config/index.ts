@@ -10,4 +10,5 @@ export const {
   ORIGIN,
   JWT_SECRET,
   JWT_ACCESS_EXPIRATION_MINUTES,
+  JWT_REFRESH_EXPIRATION_DAY,
 } = process.env;

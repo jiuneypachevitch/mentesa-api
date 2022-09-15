@@ -30,7 +30,8 @@ const options = {
   swaggerDefinition,
 
   // Paths to files containing OpenAPI definitions
-  apis: ['**/*.ts'],
+  // apis: ['**/*.ts'],
+  apis: ['swagger.yaml'],
 };
 
 export const swaggerSpec = swaggerJSDoc(options);

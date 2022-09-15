@@ -132,6 +132,7 @@ const scheduleData: Prisma.ScheduleCreateInput[] = [
   {
     sessionDate: new Date('2020-09-20 09:00:00'),
     scheduleType: 'INDIVIDUAL',
+    type: 'ONLINE',
     Professional: {
       connect: {
         id: 1,
@@ -146,6 +147,7 @@ const scheduleData: Prisma.ScheduleCreateInput[] = [
   {
     sessionDate: new Date('2020-09-25 11:00:00'),
     scheduleType: 'COUPLE',
+    type: 'ONLINE',
     Professional: {
       connect: {
         id: 2,
@@ -165,6 +167,7 @@ const scheduleData: Prisma.ScheduleCreateInput[] = [
   {
     sessionDate: new Date('2020-09-20 09:00:00'),
     scheduleType: 'IN_GROUP',
+    type: 'PRESENTIAL',
     Professional: {
       connect: {
         id: 3,
