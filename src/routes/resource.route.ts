@@ -15,6 +15,7 @@ class ResourceRoute implements Routes {
 
   private initializeRoutes() {
     this.router.route(`${this.path}`)
+        .get(this.resourceController.list)
         .post(
             validationMiddleware(CreateResourceDto, 'body'),
             this.resourceController.create
@@ -24,6 +25,7 @@ class ResourceRoute implements Routes {
             validationMiddleware(UpdateResourceDto, 'body'),
             this.resourceController.update
         )
+        .delete(this.resourceController.delete);
   }
 }
 

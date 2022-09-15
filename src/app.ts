@@ -21,11 +21,10 @@ class App {
     this.app = express();
     this.env = NODE_ENV || 'development';
     this.port = PORT || 3000;
-    this.initializeSwagger();
-    this.initializeErrorHandling();
     this.initializeMiddlewares();
     this.initializeRoutes(routes);
-
+    this.initializeSwagger();
+    this.initializeErrorHandling();
   }
 
   public listen() {
@@ -50,11 +49,6 @@ class App {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(cookieParser());
-    /*this.app.use(
-        ((err: any, req: Request, res: Response, next: NextFunction) => {
-            console.log('ERROR Middleware', err);
-            next(err);
-        }) as ErrorRequesHandler );*/
   }
 
   private initializeErrorHandling() {
@@ -65,6 +59,10 @@ class App {
     routes.forEach(route => {
       this.app.use('/', route.router);
     });
+    /* Default route 4all*/
+    this.app.use('*', (_, res) => {
+        res.send({ message: 'not found' });
+    })
   }
 
   private initializeSwagger() {

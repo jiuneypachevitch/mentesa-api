@@ -1,4 +1,4 @@
-import { IsString, IsEmail, MaxLength, Length, IsOptional } from 'class-validator';
+import { IsNumber, IsString, IsEmail, MaxLength, Length, IsOptional } from 'class-validator';
 
 export class CreateResourceDto {
     @MaxLength(150, { message: 'título excede o máximo de 150 caracteres'})
@@ -18,5 +18,11 @@ export class UpdateResourceDto extends CreateResourceDto {
 }
 
 export class UpdateResourceIdDto extends UpdateResourceDto {
+    @IsNumber()
+    id: number;
+}
+
+export class DeleteResourceIdDto {
+    @IsNumber()
     id: number;
 }
