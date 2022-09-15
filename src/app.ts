@@ -1,7 +1,7 @@
 import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-import express from 'express';
+import express, { ErrorRequestHandler, Request, Response, NextFunction } from 'express';
 import helmet from 'helmet';
 import hpp from 'hpp';
 import morgan from 'morgan';
@@ -53,13 +53,17 @@ class App {
   }
 
   private initializeErrorHandling() {
-    this.app.use(errorMiddleware);
+      this.app.use(errorMiddleware);
   }
 
   private initializeRoutes(routes: Routes[]) {
     routes.forEach(route => {
       this.app.use('/', route.router);
     });
+    /* Default route 4all*/
+    this.app.use('*', (_, res) => {
+        res.send({ message: 'not found' });
+    })
   }
 
   private initializeSwagger() {

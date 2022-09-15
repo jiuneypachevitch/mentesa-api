@@ -12,7 +12,7 @@ EXPOSE 3000
 # Development build stage
 FROM common-build-stage as development-build-stage
 
-CMD ["npm", "run", "prisma:migrate", "prisma:seed", "dev"]
+CMD ["npm", "run", "dev"]]
 
 # Production build stage
 FROM common-build-stage as production-build-stage
