@@ -1,0 +1,31 @@
+paths:
+  /users/{id}:
+    put:
+      tags: ['Usuário']
+      summary: Alterar senha
+      operationId: users/{id}
+      parameters:
+        - name: id
+          in: path
+          description: 'Id do usuário'
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+              required:
+                - password
+              example:
+                password: 'teste123'
+      responses:
+        '200':
+          description: 'Operação realizada com sucesso'
+      security:
+        - bearer: []

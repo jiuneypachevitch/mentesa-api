@@ -16,7 +16,7 @@ class UserRoute implements Routes {
 
   private initializeRoutes() {
     this.router.put(
-      `${this.path}/updateById/:id(\\d+)`,
+      `${this.path}/:id(\\d+)`,
       validationMiddleware(UpdateUserDto, 'body', true),
       this.userController.updateUser
     );

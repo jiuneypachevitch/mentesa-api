@@ -1,0 +1,78 @@
+paths:
+  /auth/register:
+    post:
+      tags: ['Autenticação']
+      summary: Cadastrar usuário
+      operationId: auth/register
+      requestBody:
+        description: 'Rota responsável por realizar o cadastro do usuário'
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+              required:
+                - name
+                - email
+                - password
+              example:
+                name: Juca Bala
+                email: juca@gmail.com
+                password: '12345678'
+      responses:
+        '200':
+          description: 'Operação realizada com sucesso'
+  /auth/login:
+    post:
+      tags: ['Autenticação']
+      summary: Realizar login
+      operationId: auth/login
+      requestBody:
+        description: 'Rota responsável por realizar login'
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+              required:
+                - email
+                - password
+              example:
+                email: juca@gmail.com
+                password: '12345678'
+      responses:
+        '200':
+          description: 'Operação realizada com sucesso'
+  /auth/logout:
+    post:
+      tags: ['Autenticação']
+      summary: Realizar logout
+      operationId: auth/logout
+      requestBody:
+        description: 'Rota responsável por realizar logout'
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+              required:
+                - email
+              example:
+                email: juca@gmail.com
+      responses:
+        '200':
+          description: 'Operação realizada com sucesso'
+      security:
+        - bearer: []

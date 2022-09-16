@@ -16,12 +16,12 @@ class ProfessionalRoute implements Routes {
 
   private initializeRoutes() {
     this.router.get(
-      `${this.path}/getById/:id(\\d+)`,
+      `${this.path}/:id(\\d+)`,
       authMiddleware,
       this.professionalController.getProfessionalById
     );
     this.router.put(
-      `${this.path}/updateById/:id(\\d+)`,
+      `${this.path}/:id(\\d+)`,
       authMiddleware,
       validationMiddleware(UpdateProfessionalDto, 'body', true),
       this.professionalController.updateProfessional
