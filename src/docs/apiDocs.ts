@@ -5,8 +5,6 @@ import { resources } from './resources';
 //import { sessions } from './sessions';
 //import { users } from './users';
 
-console.log('resources', resources);
-
 export const apiDocs = {
   ...header,
   paths: {
