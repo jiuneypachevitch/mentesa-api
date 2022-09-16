@@ -40,6 +40,7 @@ $ docker compose up -d
 
 ### Contribuidores
 
+- [Alessandra Canuto](https://github.com/alecanutto)
 - [Angélica Resende](https://github.com/angelresende)
 - [Jiuney Pachevitch](https://github.com/jiuneypachevitch)
 - [Richard Augusto Bueno](https://github.com/rbuenodev)
