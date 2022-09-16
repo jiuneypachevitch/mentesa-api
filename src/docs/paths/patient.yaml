@@ -1,0 +1,75 @@
+paths:
+  /patients/{id}:
+    get:
+      tags: ['Pacientes']
+      summary: Recuperar dados do paciente
+      operationId: patients/{id}
+      parameters:
+        - name: id
+          in: path
+          description: 'Id do paciente'
+          required: true
+          schema:
+            type: integer
+            format: int32
+            example: 1
+      responses:
+        '200':
+          description: 'Operação realizada com sucesso'
+      security:
+        - bearer: []
+    put:
+      tags: ['Pacientes']
+      summary: Alterar dados do paciente
+      operationId: patients/{id}
+      parameters:
+        - name: id
+          in: path
+          description: 'Id do paciente'
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                cpf:
+                  type: string
+                email:
+                  type: string
+                cellphone:
+                  type: string
+                gender:
+                  type:
+                    - FEMININE
+                    - MASCULINE
+                    - OTHERS
+                birthDate:
+                  type: date
+                active:
+                  type: boolean
+              required:
+                - name
+                - cpf
+                - email
+                - cellphone
+                - gender
+                - birthDate
+              example:
+                name: Maria Aparecida Rucasque
+                cpf: '00000000091'
+                email: maria.ap@gmail.com
+                cellphone: '55981999939'
+                gender: FEMININE
+                birthDate: 1990-08-10
+                active: true
+      responses:
+        '200':
+          description: 'Operação realizada com sucesso'
+      security:
+        - bearer: []

@@ -3,7 +3,6 @@ import { UpdateUserDto } from '@dtos/user.dto';
 import { Routes } from '@interfaces/routes.interface';
 import validationMiddleware from '@middlewares/validation.middleware';
 import UserController from '@controllers/user.controller';
-import authMiddleware from '@/middlewares/auth.middleware';
 
 class UserRoute implements Routes {
   public path = '/users';

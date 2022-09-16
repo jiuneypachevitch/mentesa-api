@@ -20,28 +20,28 @@ class PatientRoute implements Routes {
       authMiddleware,
       this.patientController.getPatients
     );
-    // this.router.get(
-    //   `${this.path}/:id(\\d+)`,
-    //   authMiddleware,
-    //   this.patientController.getPatientById
-    // );
-    // this.router.post(
-    //   `${this.path}`,
-    //   authMiddleware,
-    //   validationMiddleware(CreatePatientDto, 'body'),
-    //   this.patientController.createPatient
-    // );
-    // this.router.put(
-    //   `${this.path}/:id(\\d+)`,
-    //   authMiddleware,
-    //   validationMiddleware(CreatePatientDto, 'body', true),
-    //   this.patientController.updatePatient
-    // );
-    // this.router.delete(
-    //   `${this.path}/:id(\\d+)`,
-    //   authMiddleware,
-    //   this.patientController.deletePatient
-    // );
+    this.router.get(
+      `${this.path}/:id(\\d+)`,
+      authMiddleware,
+      this.patientController.getPatientById
+    );
+    this.router.post(
+      `${this.path}`,
+      authMiddleware,
+      validationMiddleware(CreatePatientDto, 'body'),
+      this.patientController.createPatient
+    );
+    this.router.put(
+      `${this.path}/:id(\\d+)`,
+      authMiddleware,
+      validationMiddleware(CreatePatientDto, 'body', true),
+      this.patientController.updatePatient
+    );
+    this.router.delete(
+      `${this.path}/:id(\\d+)`,
+      authMiddleware,
+      this.patientController.deletePatient
+    );
   }
 }
 

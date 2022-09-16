@@ -1,9 +1,12 @@
+import { Gender } from '@prisma/client';
 import {
   IsString,
   Length,
-  IsInt,
   MaxLength,
   IsDateString,
+  IsBoolean,
+  IsOptional,
+  IsEmail,
 } from 'class-validator';
 
 export class CreatePatientDto {
@@ -15,21 +18,21 @@ export class CreatePatientDto {
   @Length(11, 14)
   public cpf: string;
 
-  @IsString()
-  @MaxLength(60)
+  @IsEmail({}, { message: 'email é inválido' })
+  @MaxLength(100, { message: 'email excede o máximo de 100 caracteres' })
   public email: string;
-
-  @IsString()
-  @MaxLength(15)
-  public gender: string;
 
   @IsString()
   @Length(11, 15)
   public cellphone: string;
 
+  @IsString()
+  public gender: Gender;
+
   @IsDateString()
   public birthDate: Date;
 
-  @IsInt()
-  public professionalId: number;
+  @IsBoolean()
+  @IsOptional()
+  public active: boolean;
 }

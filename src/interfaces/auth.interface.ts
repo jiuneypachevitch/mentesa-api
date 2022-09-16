@@ -18,9 +18,5 @@ export interface LoginData {
 
 export interface RequestWithUser extends Request {
   user: User;
-  professional: Professional;
-}
-
-export interface RequestWithProfessional extends Request {
-  professional: Professional;
+  professional?: Professional;
 }

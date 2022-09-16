@@ -2,7 +2,7 @@ paths:
   /users/{id}:
     put:
       tags: ['Usuário']
-      summary: Alterar senha
+      summary: Alterar usuário
       operationId: users/{id}
       parameters:
         - name: id
@@ -13,16 +13,21 @@ paths:
             type: integer
             format: int32
       requestBody:
+      description: 'Rota responsável por alterar dados do usuário'
         content:
           application/json:
             schema:
               type: object
               properties:
+                email:
+                  type: string
                 password:
                   type: string
               required:
+                - email
                 - password
               example:
+                email: email.gmail.com
                 password: 'teste123'
       responses:
         '200':

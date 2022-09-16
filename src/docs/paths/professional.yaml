@@ -2,10 +2,10 @@ paths:
   /professionals/{id}:
     get:
       tags: ['Profissional']
-      summary: Recuperar dados do profissional por id do usuário
+      summary: Recuperar dados do profissional
       operationId: professionals/{id}
       parameters:
-        - name: userId
+        - name: id
           in: path
           description: 'Id do profissional'
           required: true
