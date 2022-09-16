@@ -45,7 +45,7 @@ class ResourceService {
     }
   };
 
-  public list = async () => {
+  public listAll = async () => {
     try {
         const listResourceData = await this.resource.findMany({
             select: {
@@ -61,7 +61,7 @@ class ResourceService {
     }
   };
 
-  public get = async (resourceId: GetResourceIdDto) => {
+  public getOne = async (resourceId: GetResourceIdDto) => {
     try {
         const resourceData = await this.resource.findUnique({
             where: {

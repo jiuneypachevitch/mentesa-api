@@ -1,21 +1,17 @@
-import compression from "compression";
-import cookieParser from "cookie-parser";
-import cors from "cors";
-import express, {
-  ErrorRequestHandler,
-  Request,
-  Response,
-  NextFunction,
-} from "express";
-import helmet from "helmet";
-import hpp from "hpp";
-import morgan from "morgan";
-import swaggerUi from "swagger-ui-express";
-import errorMiddleware from "@middlewares/error.middleware";
-import { logger, stream } from "@utils/logger";
-import { swaggerSpec } from "@docs/openapi";
-import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from "@config";
-import { Routes } from "./interfaces/routes.interface";
+import compression from 'compression';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
+import express, { ErrorRequestHandler, Request, Response, NextFunction } from 'express';
+import helmet from 'helmet';
+import hpp from 'hpp';
+import morgan from 'morgan';
+import swaggerUi from 'swagger-ui-express';
+import errorMiddleware from '@middlewares/error.middleware';
+import { logger, stream } from '@utils/logger';
+import { apiDocs } from '@docs/apiDocs';
+import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from '@config';
+import { Routes } from './interfaces/routes.interface';
+
 
 class App {
   public app: express.Application;
@@ -28,8 +24,8 @@ class App {
     this.port = PORT || 3000;
 
     this.initializeMiddlewares();
-    this.initializeRoutes(routes);
     this.initializeSwagger();
+    this.initializeRoutes(routes);
     this.initializeErrorHandling();
   }
 
@@ -72,7 +68,7 @@ class App {
   }
 
   private initializeSwagger() {
-    this.app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+    this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(apiDocs));
   }
 }
 
