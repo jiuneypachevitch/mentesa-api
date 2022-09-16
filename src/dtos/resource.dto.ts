@@ -15,6 +15,8 @@ export class CreateResourceDto {
   @MaxLength(30, { message: "categoria excede o máximo de 30 caracteres" })
   @IsString({ message: "categoria deve ser do tipo string" })
   category: string;
+  @IsNumber()
+  professionalId: number;
 }
 
 export class UpdateResourceDto extends CreateResourceDto {
@@ -29,9 +31,15 @@ export class UpdateResourceIdDto extends UpdateResourceDto {
   id: number;
 }
 
+export class ListResourceProfessionalIdDto {
+    @IsNumber
+    professionalId: number;
+}
+
 export class DeleteResourceIdDto {
   @IsNumber()
   id: number;
 }
 
 export class GetResourceIdDto extends DeleteResourceIdDto {}
+

@@ -41,7 +41,10 @@ class ResourceController {
 
   public listAll = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const resourceList = await this.resourceService.listAll();
+      const { professionalId } = req.query;
+      if (!professionalId)  throw new HttpException(404, 'Recurso não encontrado');
+
+      const resourceList = await this.resourceService.listAll(+professionalId);
 
       res.status(200).json({
         data: {

@@ -1,5 +1,5 @@
 import { hash } from 'bcrypt';
-import { CreateResourceDto, UpdateResourceIdDto, DeleteResourceIdDto, GetResourceIdDto }from '@dtos/resource.dto';
+import { CreateResourceDto, UpdateResourceIdDto, DeleteResourceIdDto, GetResourceIdDto, ListResourceProfessionalIdDto }from '@dtos/resource.dto';
 import { HttpException } from '@exceptions/HttpException';
 import { PrismaException } from '@exceptions/PrismaException';
 import { isEmpty } from '@utils/util';
@@ -16,6 +16,7 @@ class ResourceService {
             data: {
                 title: resourceData.title,
                 category: resourceData.category,
+                professionalId: resourceData.professionalId,
             },
         });
         return createResourceData;
@@ -45,18 +46,22 @@ class ResourceService {
     }
   };
 
-  public listAll = async () => {
+  public listAll = async (professionalId: number) => {
     try {
         const listResourceData = await this.resource.findMany({
+            where: {
+                professionalId: professionalId
+            },
             select: {
                 id: true,
                 title: true,
                 category: true,
             }
         });
-
+console.log(listResourceData);
         return listResourceData;
     } catch (error) {
+        console.log(error);
         throw new PrismaException(error, 'Recurso');
     }
   };

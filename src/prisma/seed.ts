@@ -190,9 +190,9 @@ const scheduleData: Prisma.ScheduleCreateInput[] = [
 ];
 
 const resourceData: Prisma.ResourceCreateInput[] = [
-  { title: 'Depressão', category: 'Transe' },
-  { title: 'Ansiedade', category: 'Ferramenta' },
-  { title: 'Luto', category: 'Transe' },
+  { title: 'Depressão', category: 'Transe', Professional: { connect: { id: 1 } } },
+  { title: 'Ansiedade', category: 'Ferramenta', Professional: { connect: { id: 1 } }},
+  { title: 'Luto', category: 'Transe', Professional: { connect: { id: 1 } }},
 ];
 
 const sessionData: Prisma.SessionCreateInput[] = [
