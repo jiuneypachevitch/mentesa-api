@@ -28,10 +28,14 @@ const authMiddleware = async (
       const users = new PrismaClient().user;
       const findUser = await users.findUnique({
         where: { id: Number(userId) },
+        include: {
+          Professional: true,
+        },
       });
 
       if (findUser) {
         req.user = findUser;
+        req.professional = findUser.Professional;
         next();
       } else {
         next(new HttpException(401, 'Token de autenticação inválido'));
