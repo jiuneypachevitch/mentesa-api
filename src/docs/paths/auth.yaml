@@ -3,9 +3,9 @@ paths:
     post:
       tags: ['Autenticação']
       summary: Cadastrar usuário
+      description: 'Rota responsável por realizar o cadastro do usuário'
       operationId: auth/register
       requestBody:
-        description: 'Rota responsável por realizar o cadastro do usuário'
         content:
           application/json:
             schema:
@@ -22,8 +22,8 @@ paths:
                 - email
                 - password
               example:
-                name: Juca Bala
-                email: juca@gmail.com
+                name: 'Juca Bala'
+                email: 'juca@gmail.com'
                 password: '12345678'
       responses:
         '200':
@@ -32,9 +32,9 @@ paths:
     post:
       tags: ['Autenticação']
       summary: Realizar login
+      description: 'Rota responsável por realizar login'
       operationId: auth/login
       requestBody:
-        description: 'Rota responsável por realizar login'
         content:
           application/json:
             schema:
@@ -48,7 +48,7 @@ paths:
                 - email
                 - password
               example:
-                email: juca@gmail.com
+                email: 'juca@gmail.com'
                 password: '12345678'
       responses:
         '200':
@@ -57,9 +57,9 @@ paths:
     post:
       tags: ['Autenticação']
       summary: Realizar logout
+      description: 'Rota responsável por realizar logout'
       operationId: auth/logout
       requestBody:
-        description: 'Rota responsável por realizar logout'
         content:
           application/json:
             schema:
@@ -70,7 +70,30 @@ paths:
               required:
                 - email
               example:
-                email: juca@gmail.com
+                email: 'juca@gmail.com'
+      responses:
+        '200':
+          description: 'Operação realizada com sucesso'
+      security:
+        - bearer: []
+  /auth/refresh-token:
+    post:
+      tags: ['Autenticação']
+      summary: Atualizar token de acesso
+      description: 'Rota responsável por atualizar o token de acesso'
+      operationId: auth/refresh-token
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                refresh-token:
+                  type: string
+              required:
+                - refresh-token:
+              example:
+                email: '5bc568cc-6bcc-4b79-9dbf-bea5528f8171'
       responses:
         '200':
           description: 'Operação realizada com sucesso'

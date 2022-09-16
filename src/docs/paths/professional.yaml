@@ -3,6 +3,7 @@ paths:
     get:
       tags: ['Profissional']
       summary: Recuperar dados do profissional
+      description: 'Rota responsável por recuperar dados do profissional'
       operationId: professionals/{id}
       parameters:
         - name: id
@@ -21,6 +22,7 @@ paths:
     put:
       tags: ['Profissional']
       summary: Alterar dados do profissional
+      description: 'Rota responsável por alterar dados do profissional'
       operationId: professionals/{id}
       parameters:
         - name: id
@@ -40,6 +42,8 @@ paths:
                   type: string
                 crp:
                   type: string
+                email:
+                  type: string
                 cellphone:
                   type: string
                 approach:
@@ -47,13 +51,15 @@ paths:
               required:
                 - name
                 - crp
+                - email
                 - cellphone
                 - approach
               example:
-                name: Juca Bala Oliveira da Silva
+                name: 'Juca Bala Oliveira da Silva'
                 crp: '12345684787'
-                cellphone: '67981799939'
-                approach: Terapia Cognitiva
+                email: 'juca.b@hmail.com'
+                cellphone: '(67)98100-0000'
+                approach: 'Terapia Cognitiva'
       responses:
         '200':
           description: 'Operação realizada com sucesso'

@@ -1,8 +1,29 @@
 paths:
+  /patients:
+    get:
+      tags: ['Pacientes']
+      summary: Listar pacientes
+      description: 'Rota responsável por listar dados de todos os pacientes do profissional logado'
+      operationId: patients/{id}
+      parameters:
+        - name: id
+          in: path
+          description: 'Id do paciente'
+          required: true
+          schema:
+            type: integer
+            format: int32
+            example: 1
+      responses:
+        '200':
+          description: 'Operação realizada com sucesso'
+      security:
+        - bearer: []
   /patients/{id}:
     get:
       tags: ['Pacientes']
       summary: Recuperar dados do paciente
+      description: 'Rota responsável por recuperar dados do paciente'
       operationId: patients/{id}
       parameters:
         - name: id
@@ -21,6 +42,7 @@ paths:
     put:
       tags: ['Pacientes']
       summary: Alterar dados do paciente
+      description: 'Rota responsável por alterar dados do paciente'
       operationId: patients/{id}
       parameters:
         - name: id
@@ -61,10 +83,10 @@ paths:
                 - gender
                 - birthDate
               example:
-                name: Maria Aparecida Rucasque
+                name: 'Maria Aparecida Rucasque'
                 cpf: '00000000091'
-                email: maria.ap@gmail.com
-                cellphone: '55981999939'
+                email: 'maria.ap@gmail.com'
+                cellphone: '(67)98100-0001'
                 gender: FEMININE
                 birthDate: 1990-08-10
                 active: true
