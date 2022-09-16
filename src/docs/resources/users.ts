@@ -1,41 +1,47 @@
 import { components } from '@docs/config';
 
 const {
-  createdResponse,
+  successResponse,
   badRequestError,
   unauthorizedError,
   conflictError,
   internalError,
 } = components.responses;
 
-export const create = {
-  '/resources': {
-    post: {
-      tags: ['Recursos'],
+export const users = {
+  '/users/{id}': {
+    put: {
+      tags: ['Usuários'],
       security: [{ bearerAuth: [] }],
-      summary: 'Cria um recurso',
-      description: 'Rota para a criação de um recurso',
+      summary: 'Altera senha',
+      description: 'Rota para alterar senha de um usuário',
+      parameters: [
+        {
+          in: 'path',
+          name: 'id',
+          required: true,
+          schema: { type: 'integer' },
+          description: 'Id do usuário',
+        },
+      ],
       requestBody: {
         content: {
           'application/json': {
             schema: {
               type: 'object',
               properties: {
-                id: { type: 'integer' },
-                title: { type: 'string' },
-                category: { type: 'string' },
+                password: { type: 'string' },
               },
-              required: ['title', 'category'],
+              required: ['password'],
               example: {
-                title: 'Ansiedade',
-                category: 'Ferramenta',
+                password: 'teste123',
               },
             },
           },
         },
       },
       responses: {
-        '201': createdResponse,
+        '200': successResponse,
         '400': badRequestError,
         '401': unauthorizedError,
         '409': conflictError,
