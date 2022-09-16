@@ -5,8 +5,11 @@ class GenerateToken {
   async execute(userId: number) {
     const expiresIn: number = Number(JWT_ACCESS_EXPIRATION_MINUTES) * 60;
 
+    const token = sign({ id: userId }, JWT_SECRET, { expiresIn });
+
     return {
-      token: sign({ id: userId }, JWT_SECRET, { expiresIn }),
+      token,
+      cookie: `Authorization=${token}; HttpOnly; Max-Age=${expiresIn};`,
     };
   }
 }
