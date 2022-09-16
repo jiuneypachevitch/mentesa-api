@@ -79,6 +79,8 @@ model Professional {
   User          User      @relation(fields: [email], references: [email], onUpdate: Cascade)
 
   Patient       Patient[]
+  
+  Resources     Resource[]
 
   Schedule      Schedule[]
 
@@ -146,14 +148,17 @@ model PatientsSchedule {
 
 model Resource {
   id              Int          @id @default(autoincrement())
+  professionalId  Int                                           @map("professional_id")
   title           String       @db.VarChar(150)
   category        String       @db.VarChar(30)
   createdAt       DateTime     @default(now())                  @map("created_at")
   updatedAt       DateTime     @updatedAt                       @map("updated_at")
 
+  Professional    Professional                                  @relation(fields: [professionalId], references: [id])
   Session         Session[]
 
   @@unique([title, category])
+  @@index([professionalId])
   @@map("resources")
 }
 
