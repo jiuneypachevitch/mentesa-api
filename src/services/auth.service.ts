@@ -1,20 +1,20 @@
-import { compare, hash } from 'bcrypt';
-import { HttpException } from '@exceptions/HttpException';
-import { isEmpty } from '@utils/util';
-import { client } from '@/prisma/client';
-import { TokenData } from '@/interfaces/auth.interface';
-import { GenerateToken } from '@/provider/generateToken';
-import { GenerateRefreshToken } from '@/provider/generateRefreshToken';
-import { LoginDto, ForgotPasswordDto, RefreshTokenDto } from '@/dtos/auth.dto';
-import { CreateUserDto } from '@dtos/user.dto';
-import { MailProvider } from '@/provider/mailTrap.provider';
-import { User } from '@prisma/client';
+import { compare, hash } from "bcrypt";
+import { HttpException } from "@exceptions/HttpException";
+import { isEmpty } from "@utils/util";
+import client from "@/prisma/client";
+import { TokenData } from "@/interfaces/auth.interface";
+import { GenerateToken } from "@/provider/generateToken";
+import { GenerateRefreshToken } from "@/provider/generateRefreshToken";
+import { LoginDto, ForgotPasswordDto, RefreshTokenDto } from "@/dtos/auth.dto";
+import { CreateUserDto } from "@dtos/user.dto";
+import { MailProvider } from "@/provider/mailTrap.provider";
+import { User } from "@prisma/client";
 
 interface ILogin {
   id: number;
   email: string;
   name: string;
-  role: 'ADMIN' | 'USER';
+  role: "ADMIN" | "USER";
   refId: number;
 }
 
@@ -23,7 +23,7 @@ class AuthService {
 
   public signup = async (userData: CreateUserDto) => {
     if (isEmpty(userData))
-      throw new HttpException(400, 'Nenhum dado foi informado');
+      throw new HttpException(400, "Nenhum dado foi informado");
 
     const findUser = await this.user.findUnique({
       where: { email: userData.email },
@@ -40,7 +40,7 @@ class AuthService {
       data: {
         email: userData.email,
         password: hashedPassword,
-        role: 'ADMIN',
+        role: "ADMIN",
         Professional: {
           create: {
             name: userData.name,
@@ -56,7 +56,7 @@ class AuthService {
     userData: LoginDto
   ): Promise<{ tokenData: TokenData; cookie: string; loginData: ILogin }> {
     if (isEmpty(userData))
-      throw new HttpException(400, 'Nenhum dado foi informado');
+      throw new HttpException(400, "Nenhum dado foi informado");
 
     const findUser: User = await this.user.findUnique({
       where: { email: userData.email },
@@ -73,7 +73,7 @@ class AuthService {
       findUser.password
     );
 
-    if (!isPasswordMatching) throw new HttpException(409, 'Senha inválida');
+    if (!isPasswordMatching) throw new HttpException(409, "Senha inválida");
 
     const findPatient = await client.patient.findUnique({
       where: { email: userData.email },
@@ -108,7 +108,7 @@ class AuthService {
     refreshTokenData: RefreshTokenDto
   ): Promise<{ token: string }> {
     if (isEmpty(refreshTokenData))
-      throw new HttpException(400, 'Nenhum dado foi informado');
+      throw new HttpException(400, "Nenhum dado foi informado");
 
     const findRefreshToken = await client.refreshToken.findFirst({
       where: {
@@ -129,7 +129,7 @@ class AuthService {
     userData: ForgotPasswordDto
   ): Promise<{ responseData: string }> {
     if (isEmpty(userData))
-      throw new HttpException(400, 'Nenhum dado foi informado');
+      throw new HttpException(400, "Nenhum dado foi informado");
 
     const findUser: User = await this.user.findUnique({
       where: { email: userData.email },
@@ -165,10 +165,10 @@ class AuthService {
         email: findUser.email,
       },
       from: {
-        name: 'Equipe Mente SÃ',
-        email: 'ale.canutto@gmail.com',
+        name: "Equipe Mente SÃ",
+        email: "ale.canutto@gmail.com",
       },
-      subject: 'Forget Password Email',
+      subject: "Forget Password Email",
       body: `<div>
               <h3>Dear ${name},</h3>
               <p>You requested for a password reset, kindly use this <a href="${url}">link</a> to reset your password</p>
@@ -182,13 +182,13 @@ class AuthService {
 
   public async logout(userData: User): Promise<User> {
     if (isEmpty(userData))
-      throw new HttpException(400, 'Nenhum dado foi informado');
+      throw new HttpException(400, "Nenhum dado foi informado");
 
     const findUser: User = await this.user.findUnique({
       where: { id: userData.id },
     });
 
-    if (!findUser) throw new HttpException(409, 'Usuário inexistente');
+    if (!findUser) throw new HttpException(409, "Usuário inexistente");
 
     return findUser;
   }

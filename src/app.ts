@@ -1,16 +1,21 @@
-import compression from 'compression';
-import cookieParser from 'cookie-parser';
-import cors from 'cors';
-import express, { ErrorRequestHandler, Request, Response, NextFunction } from 'express';
-import helmet from 'helmet';
-import hpp from 'hpp';
-import morgan from 'morgan';
-import swaggerUi from 'swagger-ui-express';
-import errorMiddleware from '@middlewares/error.middleware';
-import { logger, stream } from '@utils/logger';
-import { swaggerSpec } from '@docs/openapi';
-import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from '@config';
-import { Routes } from './interfaces/routes.interface';
+import compression from "compression";
+import cookieParser from "cookie-parser";
+import cors from "cors";
+import express, {
+  ErrorRequestHandler,
+  Request,
+  Response,
+  NextFunction,
+} from "express";
+import helmet from "helmet";
+import hpp from "hpp";
+import morgan from "morgan";
+import swaggerUi from "swagger-ui-express";
+import errorMiddleware from "@middlewares/error.middleware";
+import { logger, stream } from "@utils/logger";
+import { swaggerSpec } from "@docs/openapi";
+import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from "@config";
+import { Routes } from "./interfaces/routes.interface";
 
 class App {
   public app: express.Application;
@@ -19,7 +24,7 @@ class App {
 
   constructor(routes: Routes[]) {
     this.app = express();
-    this.env = NODE_ENV || 'development';
+    this.env = NODE_ENV || "development";
     this.port = PORT || 3000;
 
     this.initializeMiddlewares();
@@ -53,21 +58,21 @@ class App {
   }
 
   private initializeErrorHandling() {
-      this.app.use(errorMiddleware);
+    this.app.use(errorMiddleware);
   }
 
   private initializeRoutes(routes: Routes[]) {
-    routes.forEach(route => {
-      this.app.use('/', route.router);
+    routes.forEach((route) => {
+      this.app.use("/", route.router);
     });
     /* Default route 4all*/
-    this.app.use('*', (_, res) => {
-        res.send({ message: 'not found' });
-    })
+    this.app.use("*", (_, res) => {
+      res.send({ message: "not found" });
+    });
   }
 
   private initializeSwagger() {
-    this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+    this.app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
   }
 }
 

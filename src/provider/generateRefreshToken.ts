@@ -1,5 +1,5 @@
-import { JWT_ACCESS_EXPIRATION_MINUTES } from '@/config';
-import { client } from '@/prisma/client';
+import { JWT_ACCESS_EXPIRATION_MINUTES } from "@/config";
+import client from "@/prisma/client";
 
 class GenerateRefreshToken {
   async execute(userId: number) {
