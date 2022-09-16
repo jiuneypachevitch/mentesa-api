@@ -14,19 +14,22 @@ class ResourceRoute implements Routes {
   }
 
   private initializeRoutes() {
-    this.router.route(`${this.path}`)
-        .get(this.resourceController.list)
-        .post(
-            validationMiddleware(CreateResourceDto, 'body'),
-            this.resourceController.create
-        );
-    this.router.route(`${this.path}/:resourceId`)
-        .get(this.resourceController.get)
-        .patch(
-            validationMiddleware(UpdateResourceDto, 'body'),
-            this.resourceController.update
-        )
-        .delete(this.resourceController.delete);
+    /* POST /resources */
+    this.router.route(`${this.path}`).post(
+        validationMiddleware(CreateResourceDto, 'body'),
+        this.resourceController.create
+    );
+    /* GET /resources/list */    
+    this.router.route(`${this.path}/list`).get(this.resourceController.listAll);
+    /* PATCH /resources/update/{id} */    
+    this.router.route(`${this.path}/update/:id(\\d+)`).patch(
+        validationMiddleware(UpdateResourceDto, 'body'),
+        this.resourceController.update
+    )
+    /* PATCH /resources/get/{id} */    
+    this.router.route(`${this.path}/get/:id(\\d+)`).get(this.resourceController.getOne);
+    /* PATCH /resources/remove/{id} */    
+    this.router.route(`${this.path}/remove/:id(\\d+)`).delete(this.resourceController.delete);
   }
 }
 

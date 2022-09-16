@@ -25,10 +25,10 @@ class ResourceController {
   public update = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const resourceData: UpdateResourceDto = req.body;
-      const { resourceId } = req.params;
-      const resource = await this.resourceService.update({ ...resourceData, id: +resourceId });
+      const { id } = req.params;
+      const resource = await this.resourceService.update({ ...resourceData, id: +id });
 
-      res.status(202).json({
+      res.status(200).json({
         data: {
           ...resource,
         },
@@ -39,9 +39,9 @@ class ResourceController {
     }
   };
 
-  public list = async (req: Request, res: Response, next: NextFunction) => {
+  public listAll = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const resourceList = await this.resourceService.list();
+      const resourceList = await this.resourceService.listAll();
 
       res.status(200).json({
         data: {
@@ -54,18 +54,12 @@ class ResourceController {
     }
   };
 
-  public get = async (req: Request, res: Response, next: NextFunction) => {
+  public getOne = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { resourceId } = req.params;
-      const resource = await this.resourceService.get({ id: +resourceId });
+      const { id } = req.params;
+      const resource = await this.resourceService.getOne({ id: +id });
       const result = resource ? { data: { ...resource }, message: 'listed'} : { message: 'Recurso não encontrado'};
       res.status(200).json(result);
-      /*res.status(200).json({
-        data: {
-          resource,
-        },
-        message: 'listed',
-      });*/
     } catch (error) {
       next(error);
     }
@@ -73,10 +67,10 @@ class ResourceController {
 
   public delete = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { resourceId } = req.params;
-      const resource = await this.resourceService.delete({ id: +resourceId });
+      const { id } = req.params;
+      const resource = await this.resourceService.delete({ id: +id });
 
-      res.status(202).json({
+      res.status(200).json({
           message: 'deleted'
       });
     } catch (error) {
