@@ -4,6 +4,7 @@ import { PrismaClient } from '@prisma/client';
 import { HttpException } from '@exceptions/HttpException';
 import { DataStoredInToken, RequestWithUser } from '@interfaces/auth.interface';
 import { JWT_SECRET } from '@/config';
+import client from '@/prisma/client';
 
 const authMiddleware = async (
   req: RequestWithUser,
@@ -25,13 +26,17 @@ const authMiddleware = async (
       ) as DataStoredInToken;
       const userId = verificationResponse.id;
 
-      const users = new PrismaClient().user;
-      const findUser = await users.findUnique({
+      const user = client.user;
+      const findUser = await user.findUnique({
         where: { id: Number(userId) },
+        include: {
+          Professional: true,
+        },
       });
 
       if (findUser) {
         req.user = findUser;
+        req.professional = findUser.Professional;
         next();
       } else {
         next(new HttpException(401, 'Token de autenticação inválido'));

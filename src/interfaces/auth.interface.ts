@@ -1,5 +1,5 @@
 import { Request } from 'express';
-import { User } from '@prisma/client';
+import { Professional, User } from '@prisma/client';
 
 export interface DataStoredInToken {
   id: number;
@@ -18,4 +18,5 @@ export interface LoginData {
 
 export interface RequestWithUser extends Request {
   user: User;
+  professional?: Professional;
 }

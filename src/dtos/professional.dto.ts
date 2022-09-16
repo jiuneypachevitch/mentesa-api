@@ -1,4 +1,4 @@
-import { IsString, Length } from 'class-validator';
+import { IsEmail, IsString, Length, MaxLength } from 'class-validator';
 
 export class UpdateProfessionalDto {
   @IsString()
@@ -16,4 +16,8 @@ export class UpdateProfessionalDto {
   @IsString()
   @Length(3, 20)
   public approach: string;
+
+  @IsEmail({}, { message: 'email é inválido' })
+  @MaxLength(100, { message: 'email excede o máximo de 100 caracteres' })
+  public email: string;
 }
