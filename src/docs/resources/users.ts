@@ -9,7 +9,7 @@ const {
 } = components.responses;
 
 export const users = {
-  '/users/{id}': {
+  '/users/updateById/{id}': {
     put: {
       tags: ['Usuários'],
       security: [{ bearerAuth: [] }],
