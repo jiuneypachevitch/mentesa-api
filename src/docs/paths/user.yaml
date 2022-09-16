@@ -3,6 +3,7 @@ paths:
     put:
       tags: ['Usuário']
       summary: Alterar usuário
+      description: 'Rota responsável por alterar dados do usuário'
       operationId: users/{id}
       parameters:
         - name: id
@@ -13,7 +14,6 @@ paths:
             type: integer
             format: int32
       requestBody:
-      description: 'Rota responsável por alterar dados do usuário'
         content:
           application/json:
             schema:
@@ -27,7 +27,7 @@ paths:
                 - email
                 - password
               example:
-                email: email.gmail.com
+                email: 'email.gmail.com'
                 password: 'teste123'
       responses:
         '200':
