@@ -9,22 +9,8 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                email:
-                  type: string
-                password:
-                  type: string
-              required:
-                - name
-                - email
-                - password
-              example:
-                name: 'Juca Bala'
-                email: 'juca@gmail.com'
-                password: '12345678'
+              allOf:
+                - $ref: '#/components/schemas/Register'
       responses:
         '200':
           description: 'Operação realizada com sucesso'
@@ -38,18 +24,8 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                password:
-                  type: string
-              required:
-                - email
-                - password
-              example:
-                email: 'juca@gmail.com'
-                password: '12345678'
+              allOf:
+                - $ref: '#/components/schemas/Login'
       responses:
         '200':
           description: 'Operação realizada com sucesso'
@@ -63,14 +39,8 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                email:
-                  type: string
-              required:
-                - email
-              example:
-                email: 'juca@gmail.com'
+              allOf:
+                - $ref: '#/components/schemas/Logout'
       responses:
         '200':
           description: 'Operação realizada com sucesso'
@@ -86,16 +56,60 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                refresh-token:
-                  type: string
-              required:
-                - refresh-token:
-              example:
-                email: '5bc568cc-6bcc-4b79-9dbf-bea5528f8171'
+              allOf:
+                - $ref: '#/components/schemas/RefreshToken'
       responses:
         '200':
           description: 'Operação realizada com sucesso'
       security:
         - bearer: []
+components:
+  schemas:
+    Register:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - name
+        - email
+        - password
+      example:
+        name: 'Nome Usuário'
+        email: 'email@email.com'
+        password: '12345678'
+    Login:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - email
+        - password
+      example:
+        email: 'email@email.com'
+        password: '12345678'
+    Logout:
+      type: object
+      properties:
+        email:
+          type: string
+      required:
+        - email
+      example:
+        email: 'email@email.com'
+    RefreshToken:
+      type: object
+      properties:
+        refresh-token:
+          type: string
+      required:
+        - refresh-token:
+      example:
+        email: '5bc568cc-6bcc-4b79-9dbf-bea5528f8171'
