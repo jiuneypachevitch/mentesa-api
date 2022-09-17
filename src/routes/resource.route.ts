@@ -26,7 +26,7 @@ class ResourceRoute implements Routes {
             this.resourceController.listAll
         );
     this.router.route(`${this.path}/:id(\\d+)`)
-        .put(
+        .patch(
             authMiddleware,
             validationMiddleware(UpdateResourceDto, 'body'),
             this.resourceController.update

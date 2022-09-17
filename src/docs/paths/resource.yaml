@@ -57,7 +57,7 @@ paths:
           description: 'Operação realizada com sucesso'
       security:
         - bearer: []
-    put:
+    patch:
       tags: ['Recursos']
       summary: Alterar dados do recurso
       operationId: resources/{id}
