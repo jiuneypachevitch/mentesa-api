@@ -67,36 +67,36 @@ components:
   schemas:
     Patient:
       type: object
-        properties:
-          name:
-            type: string
-          cpf:
-            type: string
-          email:
-            type: string
-          cellphone:
-            type: string
-          gender:
-            type:
-              - FEMININE
-              - MASCULINE
-              - OTHERS
-          birthDate:
-            type: date
-          active:
-            type: boolean
-        required:
-          - name
-          - cpf
-          - email
-          - cellphone
-          - gender
-          - birthDate
-        example:
-          name: 'Maria Aparecida Rucasque'
-          cpf: '00000000091'
-          email: 'maria.ap@gmail.com'
-          cellphone: '(67)98100-0001'
-          gender: FEMININE
-          birthDate: 1990-08-10
-          active: true
+      properties:
+        name:
+          type: string
+        cpf:
+          type: string
+        email:
+          type: string
+        cellphone:
+          type: string
+        gender:
+          type:
+            - FEMININE
+            - MASCULINE
+            - OTHERS
+        birthDate:
+          type: date
+        active:
+          type: boolean
+      required:
+        - name
+        - cpf
+        - email
+        - cellphone
+        - gender
+        - birthDate
+      example:
+        name: 'Maria Aparecida Rucasque'
+        cpf: '00000000091'
+        email: 'maria.ap@gmail.com'
+        cellphone: '(67)98100-0001'
+        gender: FEMININE
+        birthDate: 1990-08-10
+        active: true
