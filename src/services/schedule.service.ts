@@ -1,9 +1,8 @@
 import { Schedule } from '@prisma/client';
 import { HttpException } from '@exceptions/HttpException';
 import { isEmpty } from '@utils/util';
-import client from '@/prisma/client';
 import { CreateScheduleDto } from '@/dtos/schedule.dto';
-import dayjs from 'dayjs';
+import client from '@/prisma/client';
 
 class ScheduleService {
   public schedule = client.schedule;

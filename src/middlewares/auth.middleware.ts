@@ -31,12 +31,14 @@ const authMiddleware = async (
         where: { id: Number(userId) },
         include: {
           Professional: true,
+          Patient: true,
         },
       });
 
       if (findUser) {
         req.user = findUser;
         req.professional = findUser.Professional;
+        req.patient = findUser.Patient;
         next();
       } else {
         next(new HttpException(401, 'Token de autenticação inválido'));
