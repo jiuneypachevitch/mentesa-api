@@ -1,0 +1,111 @@
+paths:
+  /resources:
+    get:
+      tags: ['Recursos']
+      summary: Listar todos os recursos
+      operationId: resources
+      responses:
+        '200':
+          description: 'Operação realizada com sucesso'
+      security:
+        - bearer: []
+    post:
+      tags: ['Recursos']
+      summary: Cria um novo recurso
+      operationId: resources
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                category:
+                  type: string
+              required:
+                - title 
+                - category
+              example:
+                title: Desenho
+                category: Lúdicos 
+      responses:
+        '200':
+          description: 'Operação realizada com sucesso'
+        '409':
+          description: 'Recurso já cadastrado'
+        '500':
+          description: 'Erro interno do servidor'
+      security:
+        - bearer: []
+  /resources/{id}:
+    get:
+      tags: ['Recursos']
+      summary: Recuperar dados do recurso
+      operationId: resources/{id}
+      parameters:
+        - name: id
+          in: path
+          description: 'Id do recurso'
+          required: true
+          schema:
+            type: integer
+            format: int32
+            example: 1
+      responses:
+        '200':
+          description: 'Operação realizada com sucesso'
+      security:
+        - bearer: []
+    put:
+      tags: ['Recursos']
+      summary: Alterar dados do recurso
+      operationId: resources/{id}
+      parameters:
+        - name: id
+          in: path
+          description: 'Id do recurso'
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                category:
+                  type: string
+              example:
+                title: Desenho
+                category: Lúdicos 
+      responses:
+        '200':
+          description: 'Operação realizada com sucesso'
+        '409':
+          description: 'Recurso já cadastrado'
+        '500':
+          description: 'Erro interno do servidor'
+      security:
+        - bearer: []
+    delete:
+      tags: ['Recursos']
+      summary: Remove um recurso
+      operationId: resources/{id}
+      parameters:
+        - name: id
+          in: path
+          description: 'Id do recurso'
+          required: true
+          schema:
+            type: integer
+            format: int32
+            example: 1
+      responses:
+        '200':
+          description: 'Operação realizada com sucesso'
+      security:
+        - bearer: []

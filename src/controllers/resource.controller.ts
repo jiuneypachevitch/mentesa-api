@@ -9,7 +9,7 @@ class ResourceController {
   public create = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const resourceData: CreateResourceDto = req.body;
-      const resource = await this.resourceService.create(resourceData);
+      const resource = await this.resourceService.create(resourceData, req.professional.id);
 
       res.status(201).json({
         data: {
@@ -26,8 +26,7 @@ class ResourceController {
     try {
       const resourceData: UpdateResourceDto = req.body;
       const { id } = req.params;
-      const resource = await this.resourceService.update({ ...resourceData, id: +id });
-
+      const resource = await this.resourceService.update({ ...resourceData, id: +id }, req.professional.id);
       res.status(200).json({
         data: {
           ...resource,
@@ -41,10 +40,7 @@ class ResourceController {
 
   public listAll = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const { professionalId } = req.query;
-      if (!professionalId)  throw new HttpException(404, 'Recurso não encontrado');
-
-      const resourceList = await this.resourceService.listAll(+professionalId);
+      const resourceList = await this.resourceService.listAll(req.professional.id);
 
       res.status(200).json({
         data: {
@@ -60,7 +56,7 @@ class ResourceController {
   public getOne = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;
-      const resource = await this.resourceService.getOne({ id: +id });
+      const resource = await this.resourceService.getOne({ id: +id }, req.professional.id);
       const result = resource ? { data: { ...resource }, message: 'listed'} : { message: 'Recurso não encontrado'};
       res.status(200).json(result);
     } catch (error) {
@@ -71,11 +67,9 @@ class ResourceController {
   public delete = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;
-      const resource = await this.resourceService.delete({ id: +id });
-
-      res.status(200).json({
-          message: 'deleted'
-      });
+      const resource = await this.resourceService.delete({ id: +id }, req.professional.id);
+      const result = resource ? { message: 'deleted' } : { message: 'Recurso não encontrado' };
+      res.status(200).json(result);
     } catch (error) {
       next(error);
     }
