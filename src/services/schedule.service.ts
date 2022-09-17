@@ -2,6 +2,8 @@ import { Schedule } from '@prisma/client';
 import { HttpException } from '@exceptions/HttpException';
 import { isEmpty } from '@utils/util';
 import client from '@/prisma/client';
+import { CreateScheduleDto } from '@/dtos/schedule.dto';
+import dayjs from 'dayjs';
 
 class ScheduleService {
   public schedule = client.schedule;
@@ -31,161 +33,155 @@ class ScheduleService {
     return allSchedules;
   }
 
-  // public async findPatientById(
-  //   patientId: number,
-  //   professionalId: number
-  // ): Promise<Patient> {
-  //   if (isEmpty(patientId))
-  //     throw new HttpException(400, 'Id do paciente não foi informado');
+  public async findScheduleById(
+    scheduleId: number,
+    professionalId: number
+  ): Promise<Schedule> {
+    if (isEmpty(scheduleId))
+      throw new HttpException(400, 'Id do agendamento não foi informado');
 
-  //   if (isEmpty(professionalId))
-  //     throw new HttpException(400, 'Id do profissional não foi informado');
+    if (isEmpty(professionalId))
+      throw new HttpException(400, 'Id do profissional não foi informado');
 
-  //   const findPatient = await this.patient.findFirst({
-  //     where: {
-  //       AND: [
-  //         {
-  //           id: patientId,
-  //         },
-  //         { professionalId },
-  //       ],
-  //     },
-  //   });
+    const findSchedule = await this.schedule.findFirst({
+      where: {
+        AND: [
+          {
+            id: scheduleId,
+          },
+          { professionalId },
+        ],
+      },
+      include: {
+        PatientsSchedule: {
+          where: {
+            Patient: {
+              professionalId,
+            },
+          },
+          include: {
+            Patient: true,
+          },
+        },
+      },
+    });
 
-  //   if (!findPatient) throw new HttpException(409, 'Paciente inexistente');
+    if (!findSchedule) throw new HttpException(409, 'Agendamento inexistente');
 
-  //   return findPatient;
-  // }
+    return findSchedule;
+  }
 
-  // public async create(
-  //   patientData: CreatePatientDto,
-  //   professionalId: number
-  // ): Promise<Patient> {
-  //   if (isEmpty(patientData))
-  //     throw new HttpException(400, 'Nenhum dado foi informado');
+  public async create(
+    scheduleData: CreateScheduleDto,
+    professionalId: number
+  ): Promise<Schedule> {
+    if (isEmpty(scheduleData))
+      throw new HttpException(400, 'Nenhum dado foi informado');
 
-  //   if (isEmpty(professionalId))
-  //     throw new HttpException(400, 'Id do profissional não foi informado');
+    if (isEmpty(professionalId))
+      throw new HttpException(400, 'Id do profissional não foi informado');
 
-  //   const findPatient = await this.patient.findMany({
-  //     where: {
-  //       OR: [{ cpf: patientData.cpf }, { email: patientData.email }],
-  //     },
-  //   });
+    const createPatientlData: Promise<Schedule> = this.schedule.create({
+      data: {
+        sessionDate: new Date(scheduleData.sessionDate),
+        status: scheduleData.status,
+        type: scheduleData.type,
+        scheduleType: scheduleData.scheduleType,
+        Professional: {
+          connect: {
+            id: professionalId,
+          },
+        },
+        PatientsSchedule: {
+          createMany: {
+            data: scheduleData.patientsSchedule,
+          },
+        },
+      },
+    });
 
-  //   if (findPatient.length > 0)
-  //     throw new HttpException(409, `O paciente já está cadastrado`);
+    return createPatientlData;
+  }
 
-  //   const hashedPassword = await hash('12345678', 8);
-  //   const createPatientlData: Promise<Patient> = this.patient.create({
-  //     data: {
-  //       name: patientData.name,
-  //       cpf: patientData.cpf,
-  //       gender: patientData.gender,
-  //       cellphone: patientData.cellphone,
-  //       birthDate: new Date(patientData.birthDate),
-  //       Professional: {
-  //         connect: {
-  //           id: professionalId,
-  //         },
-  //       },
-  //       User: {
-  //         create: {
-  //           email: patientData.email,
-  //           password: hashedPassword,
-  //           role: 'USER',
-  //         },
-  //       },
-  //     },
-  //   });
+  public async updateSchedule(
+    scheduleId: number,
+    professionalId: number,
+    scheduleData: CreateScheduleDto
+  ): Promise<Schedule> {
+    if (isEmpty(scheduleData))
+      throw new HttpException(400, 'Nenhum dado foi informado');
 
-  //   return createPatientlData;
-  // }
+    if (isEmpty(professionalId))
+      throw new HttpException(400, 'Id do profissional não foi informado');
 
-  // public async updatePatient(
-  //   patientId: number,
-  //   professionalId: number,
-  //   patientData: CreatePatientDto
-  // ): Promise<Patient> {
-  //   if (isEmpty(patientData))
-  //     throw new HttpException(400, 'Nenhum dado foi informado');
+    const findSchedule = await this.schedule.findFirst({
+      where: {
+        AND: [
+          {
+            id: scheduleId,
+          },
+          { professionalId },
+        ],
+      },
+    });
 
-  //   if (isEmpty(professionalId))
-  //     throw new HttpException(400, 'Id do profissional não foi informado');
+    if (!findSchedule) throw new HttpException(409, 'Agendamento inexistente');
 
-  //   const findPatient = await this.patient.findFirst({
-  //     where: {
-  //       AND: [
-  //         {
-  //           id: patientId,
-  //         },
-  //         { professionalId },
-  //       ],
-  //     },
-  //   });
+    const updateSchedule = await this.schedule.update({
+      where: { id: scheduleId },
+      data: {
+        sessionDate: new Date(scheduleData.sessionDate),
+        status: scheduleData.status,
+        type: scheduleData.type,
+        scheduleType: scheduleData.scheduleType,
+        Professional: {
+          connect: {
+            id: professionalId,
+          },
+        },
+        PatientsSchedule: {
+          deleteMany: {
+            scheduleId,
+          },
+          createMany: {
+            data: scheduleData.patientsSchedule,
+          },
+        },
+      },
+    });
 
-  //   if (!findPatient) throw new HttpException(409, 'Paciente inexistente');
+    return updateSchedule;
+  }
 
-  //   const patientExistent = await this.patient.findMany({
-  //     where: {
-  //       OR: [{ cpf: patientData.cpf }, { email: patientData.email }],
-  //       NOT: {
-  //         id: findPatient.id,
-  //       },
-  //     },
-  //   });
+  public async deletePatient(
+    scheduleId: number,
+    professionalId: number
+  ): Promise<Schedule> {
+    if (isEmpty(scheduleId))
+      throw new HttpException(400, 'Id do paciente não foi informado');
 
-  //   if (patientExistent.length > 0)
-  //     throw new HttpException(409, `O paciente já está cadastrado`);
+    if (isEmpty(professionalId))
+      throw new HttpException(400, 'Id do profissional não foi informado');
 
-  //   const updatePatient = await this.patient.update({
-  //     where: { id: patientId },
-  //     data: {
-  //       name: patientData.name,
-  //       cpf: patientData.cpf,
-  //       gender: patientData.gender,
-  //       cellphone: patientData.cellphone,
-  //       birthDate: new Date(patientData.birthDate),
-  //       User: {
-  //         update: {
-  //           email: patientData.email,
-  //         },
-  //       },
-  //     },
-  //   });
+    const findSchedule = await this.schedule.findFirst({
+      where: {
+        AND: [
+          {
+            id: scheduleId,
+          },
+          { professionalId },
+        ],
+      },
+    });
 
-  //   return updatePatient;
-  // }
+    if (!findSchedule) throw new HttpException(409, 'Agendamento inexistente');
 
-  // public async deletePatient(
-  //   patientId: number,
-  //   professionalId: number
-  // ): Promise<Patient> {
-  //   if (isEmpty(patientId))
-  //     throw new HttpException(400, 'Id do paciente não foi informado');
+    const deleteScheduleData = await this.schedule.delete({
+      where: { id: scheduleId },
+    });
 
-  //   if (isEmpty(professionalId))
-  //     throw new HttpException(400, 'Id do profissional não foi informado');
-
-  //   const findPatient = await this.patient.findFirst({
-  //     where: {
-  //       AND: [
-  //         {
-  //           id: patientId,
-  //         },
-  //         { professionalId },
-  //       ],
-  //     },
-  //   });
-
-  //   if (!findPatient) throw new HttpException(409, 'Paciente inexistente');
-
-  //   const deletePatientData = await this.patient.delete({
-  //     where: { id: patientId },
-  //   });
-
-  //   return deletePatientData;
-  // }
+    return deleteScheduleData;
+  }
 }
 
 export { ScheduleService };
