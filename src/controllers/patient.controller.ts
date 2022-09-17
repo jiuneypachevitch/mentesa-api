@@ -24,14 +24,15 @@ class PatientController {
   };
 
   public getPatientById = async (
-    req: Request,
+    req: RequestWithUser,
     res: Response,
     next: NextFunction
   ): Promise<void> => {
     try {
       const patientId = Number(req.params.id);
+      const professionalId = req.professional.id || 0;
       const findOnePatientData: Patient =
-        await this.patientService.findPatientById(patientId);
+        await this.patientService.findPatientById(patientId, professionalId);
 
       res.status(200).json({ data: findOnePatientData, message: 'findOne' });
     } catch (error) {
@@ -59,15 +60,20 @@ class PatientController {
   };
 
   public updatePatient = async (
-    req: Request,
+    req: RequestWithUser,
     res: Response,
     next: NextFunction
   ): Promise<void> => {
     try {
       const patientId = Number(req.params.id);
+      const professionalId = req.professional.id || 0;
       const patientData: CreatePatientDto = req.body;
       const updatePatientData: Patient =
-        await this.patientService.updatePatient(patientId, patientData);
+        await this.patientService.updatePatient(
+          patientId,
+          professionalId,
+          patientData
+        );
 
       res.status(200).json({ data: updatePatientData, message: 'updated' });
     } catch (error) {
@@ -76,14 +82,15 @@ class PatientController {
   };
 
   public deletePatient = async (
-    req: Request,
+    req: RequestWithUser,
     res: Response,
     next: NextFunction
   ): Promise<void> => {
     try {
       const patientId = Number(req.params.id);
+      const professionalId = req.professional.id || 0;
       const deletePatientData: Patient =
-        await this.patientService.deletePatient(patientId);
+        await this.patientService.deletePatient(patientId, professionalId);
 
       res.status(200).json({ data: deletePatientData, message: 'deleted' });
     } catch (error) {
