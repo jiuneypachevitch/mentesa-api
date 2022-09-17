@@ -82,12 +82,13 @@ CREATE TABLE "patients_schedule" (
 -- CreateTable
 CREATE TABLE "resources" (
     "id" SERIAL NOT NULL,
+    "professional_id" INTEGER NOT NULL,
     "title" VARCHAR(150) NOT NULL,
     "category" VARCHAR(30) NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "resources_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "resources_pkey" PRIMARY KEY ("id","professional_id")
 );
 
 -- CreateTable
@@ -101,6 +102,15 @@ CREATE TABLE "sessions" (
     "updated_at" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "sessions_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "refresh_token" (
+    "id" TEXT NOT NULL,
+    "expiresIn" INTEGER NOT NULL,
+    "userId" INTEGER NOT NULL,
+
+    CONSTRAINT "refresh_token_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -137,19 +147,28 @@ CREATE INDEX "patients_schedule_patient_id_idx" ON "patients_schedule"("patient_
 CREATE INDEX "patients_schedule_schedule_id_idx" ON "patients_schedule"("schedule_id");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "resources_id_key" ON "resources"("id");
+
+-- CreateIndex
+CREATE INDEX "resources_professional_id_idx" ON "resources"("professional_id");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "resources_title_category_key" ON "resources"("title", "category");
 
 -- CreateIndex
 CREATE INDEX "sessions_schedule_id_idx" ON "sessions"("schedule_id");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "refresh_token_userId_key" ON "refresh_token"("userId");
+
 -- AddForeignKey
-ALTER TABLE "professionals" ADD CONSTRAINT "professionals_email_fkey" FOREIGN KEY ("email") REFERENCES "users"("email") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "professionals" ADD CONSTRAINT "professionals_email_fkey" FOREIGN KEY ("email") REFERENCES "users"("email") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "patients" ADD CONSTRAINT "patients_professional_id_fkey" FOREIGN KEY ("professional_id") REFERENCES "professionals"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "patients" ADD CONSTRAINT "patients_email_fkey" FOREIGN KEY ("email") REFERENCES "users"("email") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "patients" ADD CONSTRAINT "patients_email_fkey" FOREIGN KEY ("email") REFERENCES "users"("email") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "schedules" ADD CONSTRAINT "schedules_professional_id_fkey" FOREIGN KEY ("professional_id") REFERENCES "professionals"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -161,7 +180,13 @@ ALTER TABLE "patients_schedule" ADD CONSTRAINT "patients_schedule_schedule_id_fk
 ALTER TABLE "patients_schedule" ADD CONSTRAINT "patients_schedule_patient_id_fkey" FOREIGN KEY ("patient_id") REFERENCES "patients"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "resources" ADD CONSTRAINT "resources_professional_id_fkey" FOREIGN KEY ("professional_id") REFERENCES "professionals"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "sessions" ADD CONSTRAINT "sessions_schedule_id_fkey" FOREIGN KEY ("schedule_id") REFERENCES "schedules"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "sessions" ADD CONSTRAINT "sessions_resource_id_fkey" FOREIGN KEY ("resource_id") REFERENCES "resources"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "refresh_token" ADD CONSTRAINT "refresh_token_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

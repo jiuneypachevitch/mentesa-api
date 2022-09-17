@@ -147,7 +147,7 @@ model PatientsSchedule {
 }
 
 model Resource {
-  id              Int          @id @default(autoincrement())
+  id              Int          @unique @default(autoincrement())
   professionalId  Int                                           @map("professional_id")
   title           String       @db.VarChar(150)
   category        String       @db.VarChar(30)
@@ -157,7 +157,9 @@ model Resource {
   Professional    Professional                                  @relation(fields: [professionalId], references: [id])
   Session         Session[]
 
+  
   @@unique([title, category])
+  @@id([id, professionalId])
   @@index([professionalId])
   @@map("resources")
 }

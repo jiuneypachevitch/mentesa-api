@@ -4,7 +4,6 @@ import { HttpException } from '@exceptions/HttpException';
 import { PrismaException } from '@exceptions/PrismaException';
 import { isEmpty } from '@utils/util';
 import client from '@/prisma/client';
-import { omit } from 'lodash';
 import { Resource } from '@prisma/client';
 
 class ResourceService {
@@ -27,26 +26,25 @@ class ResourceService {
     }
   };
 
-  public update = async (resourceData: UpdateResourceIdDto, professionalId: number): Promise<number> => {
+  public update = async (resourceData: UpdateResourceDto, id: number, professionalId: number): Promise<number> => {
     if (isEmpty(resourceData))
         throw new HttpException(400, 'Nenhum dado foi informado');
     
-    const updateFields = omit(resourceData, 'id');
     try {
-        const updateResourceData = await this.resource.updateMany({
-            data: {
-                ...updateFields
-            },
+        const updateResourceData = await this.resource.update({
             where: {
-                AND: [
-                    { id: resourceData.id },
-                    { professionalId },
-                ],
-            }
+                id_professionalId: {
+                    id,
+                    professionalId
+                }
+            },
+            data: {
+                ...resourceData,
+            },
         });
-        return updateResourceData.count;
+        return updateResourceData;
     } catch (error) {
-        throw new PrismaException(error, 'Recurso');
+       throw new PrismaException(error, 'Recurso');
     }
   };
 
@@ -63,14 +61,14 @@ class ResourceService {
     }
   };
 
-  public getOne = async (resourceId: GetResourceIdDto, professionalId: number): Promise<Resource> => {
+  public getOne = async (id: number, professionalId: number): Promise<Resource> => {
     try {
-        const resourceData = await this.resource.findFirst({
+        const resourceData = await this.resource.findUnique({
             where: {
-                AND: [
-                    { id: resourceId.id },
-                    { professionalId },
-                ],
+                id_professionalId: {
+                    id ,
+                    professionalId,
+                },
             }
         });
 
@@ -80,17 +78,18 @@ class ResourceService {
     }
   };
 
-  public delete = async (resourceId: DeleteResourceIdDto, professionalId: number): Promise<number> => {
+  public delete = async (id: number, professionalId: number): Promise<Resource> => {
     try {
-        const resourceData = await this.resource.deleteMany({
+        const resourceData = await this.resource.delete({
             where: {
-                AND: [
-                    { id: resourceId.id },
-                    { professionalId },
-                ],
+                id_professionalId: {
+                    id,
+                    professionalId,
+                },
             }
         });
-        return resourceData.count;
+        console.log(resourceData);
+        return resourceData;
     } catch (error) {
         throw new PrismaException(error, 'Recurso');
     }
