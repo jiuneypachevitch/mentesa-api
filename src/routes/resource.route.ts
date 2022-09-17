@@ -3,6 +3,7 @@ import { CreateResourceDto, UpdateResourceDto } from '@dtos/resource.dto';
 import { ResourceController } from '@/controllers/resource.controller';
 import { Routes } from '@/interfaces/routes.interface';
 import validationMiddleware from '@middlewares/validation.middleware';
+import authMiddleware from '@/middlewares/auth.middleware';
 
 class ResourceRoute implements Routes {
   public path = '/resources';
@@ -14,22 +15,30 @@ class ResourceRoute implements Routes {
   }
 
   private initializeRoutes() {
-    /* POST /resources */
-    this.router.route(`${this.path}`).post(
-        validationMiddleware(CreateResourceDto, 'body'),
-        this.resourceController.create
-    );
-    /* GET /resources/list */    
-    this.router.route(`${this.path}/list`).get(this.resourceController.listAll);
-    /* PATCH /resources/update/{id} */    
-    this.router.route(`${this.path}/update/:id(\\d+)`).patch(
-        validationMiddleware(UpdateResourceDto, 'body'),
-        this.resourceController.update
-    )
-    /* PATCH /resources/get/{id} */    
-    this.router.route(`${this.path}/get/:id(\\d+)`).get(this.resourceController.getOne);
-    /* PATCH /resources/remove/{id} */    
-    this.router.route(`${this.path}/remove/:id(\\d+)`).delete(this.resourceController.delete);
+    this.router.route(`${this.path}`)
+        .post(
+            authMiddleware,
+            validationMiddleware(CreateResourceDto, 'body'),
+            this.resourceController.create
+        )
+        .get(
+            authMiddleware,
+            this.resourceController.listAll
+        );
+    this.router.route(`${this.path}/:id(\\d+)`)
+        .put(
+            authMiddleware,
+            validationMiddleware(UpdateResourceDto, 'body'),
+            this.resourceController.update
+        )
+        .get(
+            authMiddleware,
+            this.resourceController.getOne
+        )
+        .delete(
+            authMiddleware,
+            this.resourceController.delete
+        );
   }
 }
 

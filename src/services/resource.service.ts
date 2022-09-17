@@ -8,7 +8,8 @@ import { omit } from 'lodash';
 
 class ResourceService {
   private resource = client.resource;  
-  public create = async (resourceData: CreateResourceDto) => {
+
+  public create = async (resourceData: CreateResourceDto, professionalId: number) => {
     if (isEmpty(resourceData))
         throw new HttpException(400, 'Nenhum dado foi informado');
     try {
@@ -16,7 +17,7 @@ class ResourceService {
             data: {
                 title: resourceData.title,
                 category: resourceData.category,
-                professionalId: resourceData.professionalId,
+                professionalId
             },
         });
         return createResourceData;
@@ -25,18 +26,21 @@ class ResourceService {
     }
   };
 
-  public update = async (resourceData: UpdateResourceIdDto) => {
+  public update = async (resourceData: UpdateResourceIdDto, professionalId: number) => {
     if (isEmpty(resourceData))
         throw new HttpException(400, 'Nenhum dado foi informado');
     
     const updateFields = omit(resourceData, 'id');
     try {
-        const updateResourceData = await this.resource.update({
+        const updateResourceData = await this.resource.updateMany({
             data: {
                 ...updateFields
             },
             where: {
-                id: resourceData.id
+                AND: [
+                    { id: resourceData.id },
+                    { professionalId },
+                ],
             }
         });
 
@@ -50,7 +54,7 @@ class ResourceService {
     try {
         const listResourceData = await this.resource.findMany({
             where: {
-                professionalId: professionalId
+                professionalId
             },
             select: {
                 id: true,
@@ -58,7 +62,6 @@ class ResourceService {
                 category: true,
             }
         });
-console.log(listResourceData);
         return listResourceData;
     } catch (error) {
         console.log(error);
@@ -66,11 +69,14 @@ console.log(listResourceData);
     }
   };
 
-  public getOne = async (resourceId: GetResourceIdDto) => {
+  public getOne = async (resourceId: GetResourceIdDto, professionalId: number) => {
     try {
-        const resourceData = await this.resource.findUnique({
+        const resourceData = await this.resource.findFirst({
             where: {
-                id: resourceId.id
+                AND: [
+                    { id: resourceId.id },
+                    { professionalId },
+                ],
             },
             select: {
                 id: true,
@@ -85,11 +91,14 @@ console.log(listResourceData);
     }
   };
 
-  public delete = async (resourceId: DeleteResourceIdDto) => {
+  public delete = async (resourceId: DeleteResourceIdDto, professionalId: number) => {
     try {
-        const updateResourceData = await this.resource.delete({
+        const updateResourceData = await this.resource.deleteMany({
             where: {
-                id: resourceId.id
+                AND: [
+                    { id: resourceId.id },
+                    { professionalId },
+                ],
             }
         });
     } catch (error) {

@@ -31,6 +31,7 @@ const options = {
     '**/user.yaml',
     '**/professional.yaml',
     '**/patient.yaml',
+    '**/resource.yaml',
   ],
 };
 
