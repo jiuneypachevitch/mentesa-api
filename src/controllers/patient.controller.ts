@@ -13,7 +13,7 @@ class PatientController {
     next: NextFunction
   ): Promise<void> => {
     try {
-      const professionalId = req.professional.id || 0;
+      const professionalId = req.professional.id;
       const findAllPatientsData: Patient[] =
         await this.patientService.findAllPatients(professionalId);
 
@@ -30,7 +30,7 @@ class PatientController {
   ): Promise<void> => {
     try {
       const patientId = Number(req.params.id);
-      const professionalId = req.professional.id || 0;
+      const professionalId = req.professional.id;
       const findOnePatientData: Patient =
         await this.patientService.findPatientById(patientId, professionalId);
 
@@ -47,7 +47,7 @@ class PatientController {
   ): Promise<void> => {
     try {
       const patientData: CreatePatientDto = req.body;
-      const professionalId = req.professional.id || 0;
+      const professionalId = req.professional.id;
       const updatePatientData: Patient = await this.patientService.create(
         patientData,
         professionalId
@@ -66,7 +66,7 @@ class PatientController {
   ): Promise<void> => {
     try {
       const patientId = Number(req.params.id);
-      const professionalId = req.professional.id || 0;
+      const professionalId = req.professional.id;
       const patientData: CreatePatientDto = req.body;
       const updatePatientData: Patient =
         await this.patientService.updatePatient(
@@ -88,7 +88,7 @@ class PatientController {
   ): Promise<void> => {
     try {
       const patientId = Number(req.params.id);
-      const professionalId = req.professional.id || 0;
+      const professionalId = req.professional.id;
       const deletePatientData: Patient =
         await this.patientService.deletePatient(patientId, professionalId);
 
