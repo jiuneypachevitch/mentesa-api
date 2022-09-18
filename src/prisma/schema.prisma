@@ -82,6 +82,8 @@ model Professional {
   
   Resources     Resource[]
 
+  Sessions      Session[]
+
   Schedule      Schedule[]
 
   @@index([email])
@@ -165,9 +167,10 @@ model Resource {
 }
 
 model Session {
-  id              Int          @id @default(autoincrement())
+  id              Int          @unique @default(autoincrement())
   subject         String       @db.VarChar(150)
   duration        Int
+  professionalId  Int                                         @map("professional_id")
   scheduleId      Int          @map("schedule_id")
   resourceId      Int          @map("resource_id")
   createdAt       DateTime     @default(now())                 @map("created_at")
@@ -177,6 +180,9 @@ model Session {
 
   Resource        Resource     @relation(fields: [resourceId], references: [id])
 
+  Professional    Professional @relation(fields: [professionalId], references: [id])
+
+  @@id([id, professionalId])
   @@index([scheduleId])
   @@map("sessions")
 }

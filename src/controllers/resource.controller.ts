@@ -67,7 +67,7 @@ class ResourceController {
       const { id } = req.params;
       const resource = await this.resourceService.delete(+id, req.professional.id);
 
-      res.status(200).json(resource ? { message: 'deleted' } : { message: 'Recurso não encontrado' });
+      res.status(200).json(resource ? { data: { ...resource }, message: 'deleted' } : { message: 'Recurso não encontrado' });
     } catch (error) {
       next(error);
     }

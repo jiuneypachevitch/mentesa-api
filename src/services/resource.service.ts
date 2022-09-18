@@ -1,5 +1,5 @@
 import { hash } from 'bcrypt';
-import { CreateResourceDto, UpdateResourceIdDto, DeleteResourceIdDto, GetResourceIdDto, ListResourceProfessionalIdDto }from '@dtos/resource.dto';
+import { CreateResourceDto, UpdateResourceDto }from '@dtos/resource.dto';
 import { HttpException } from '@exceptions/HttpException';
 import { PrismaException } from '@exceptions/PrismaException';
 import { isEmpty } from '@utils/util';
