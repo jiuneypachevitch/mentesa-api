@@ -1,37 +1,39 @@
 import { hash } from 'bcrypt';
-import { CreateResourceDto, UpdateResourceIdDto, DeleteResourceIdDto, GetResourceIdDto, ListResourceProfessionalIdDto }from '@dtos/resource.dto';
+import { CreateSessionDto, UpdateSessionDto }from '@dtos/session.dto';
 import { HttpException } from '@exceptions/HttpException';
 import { PrismaException } from '@exceptions/PrismaException';
 import { isEmpty } from '@utils/util';
 import client from '@/prisma/client';
-import { Resource } from '@prisma/client';
+import { Session } from '@prisma/client';
 
 class SessionService {
-  private resource = client.resource;  
+  private session = client.session;  
 
-  public create = async (resourceData: CreateResourceDto, professionalId: number): Promise<Resource> => {
-    if (isEmpty(resourceData))
+  public create = async (sessionData: CreateSessionDto, professionalId: number): Promise<Resource> => {
+    if (isEmpty(sessionData))
         throw new HttpException(400, 'Nenhum dado foi informado');
-    try {
-        const createResourceData = await this.resource.create({
+    //try {
+        const createSessionData = await this.session.create({
             data: {
-                title: resourceData.title,
-                category: resourceData.category,
+                subject: sessionData.subject,
+                duration: sessionData.duration,
+                scheduleId: sessionData.scheduleId,
+                resourceId: sessionData.resourceId,
                 professionalId
             },
         });
-        return createResourceData;
-    } catch (error) {
-        throw new PrismaException(error, 'Recurso');
-    }
+        return createSessionData;
+    //} catch (error) {
+    //    throw new PrismaException(error, 'Sessão');
+    //}
   };
 
-  public update = async (resourceData: UpdateResourceDto, id: number, professionalId: number): Promise<number> => {
-    if (isEmpty(resourceData))
+  public update = async (sessionData: UpdateSessionDto, id: number, professionalId: number): Promise<number> => {
+    if (isEmpty(sessionData))
         throw new HttpException(400, 'Nenhum dado foi informado');
     
     try {
-        const updateResourceData = await this.resource.update({
+        const updateSessionData = await this.session.update({
             where: {
                 id_professionalId: {
                     id,
@@ -39,31 +41,31 @@ class SessionService {
                 }
             },
             data: {
-                ...resourceData,
+                ...sessionData,
             },
         });
-        return updateResourceData;
+        return updateSessionData;
     } catch (error) {
-       throw new PrismaException(error, 'Recurso');
+       throw new PrismaException(error, 'Sessão');
     }
   };
 
-  public listAll = async (professionalId: number): Promise<Resource>[] => {
+  public listAll = async (professionalId: number): Promise<Session>[] => {
     try {
-        const listResourceData = await this.resource.findMany({
+        const listSessionData = await this.session.findMany({
             where: {
                 professionalId
             }
         });
-        return listResourceData;
+        return listSessionData;
     } catch (error) {
-        throw new PrismaException(error, 'Recurso');
+        throw new PrismaException(error, 'Sessão');
     }
   };
 
-  public getOne = async (id: number, professionalId: number): Promise<Resource> => {
+  public getOne = async (id: number, professionalId: number): Promise<Session> => {
     try {
-        const resourceData = await this.resource.findUnique({
+        const sessionData = await this.session.findUnique({
             where: {
                 id_professionalId: {
                     id ,
@@ -72,15 +74,15 @@ class SessionService {
             }
         });
 
-        return resourceData;
+        return sessionData;
     } catch (error) {
-        throw new PrismaException(error, 'Recurso');
+        throw new PrismaException(error, 'Sessão');
     }
   };
 
-  public delete = async (id: number, professionalId: number): Promise<Resource> => {
+  public delete = async (id: number, professionalId: number): Promise<Session> => {
     try {
-        const resourceData = await this.resource.delete({
+        const sessionData = await this.session.delete({
             where: {
                 id_professionalId: {
                     id,
@@ -88,9 +90,9 @@ class SessionService {
                 },
             }
         });
-        return resourceData;
+        return sessionData;
     } catch (error) {
-        throw new PrismaException(error, 'Recurso');
+        throw new PrismaException(error, 'Sessão');
     }
   };
 }
