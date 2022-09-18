@@ -88,7 +88,6 @@ class ResourceService {
                 },
             }
         });
-        console.log(resourceData);
         return resourceData;
     } catch (error) {
         throw new PrismaException(error, 'Recurso');
