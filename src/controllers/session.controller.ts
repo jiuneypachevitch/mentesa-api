@@ -12,9 +12,7 @@ class SessionController {
       const session = await this.sessionService.create(sessionData, req.professional.id);
 
       res.status(201).json({
-        data: {
-          ...session,
-        },
+        session,
         message: 'created',
       });
     } catch (error) {
@@ -28,9 +26,10 @@ class SessionController {
       const { id } = req.params;
       const session = await this.sessionService.update(sessionData, +id, req.professional.id);
 
-      res.status(200).json(
-        { data: { ...session }, message: 'updated' }
-      );
+      res.status(200).json({ 
+        session, 
+        message: 'updated' 
+      });
     } catch (error) {
       next(error);
     }
@@ -38,12 +37,10 @@ class SessionController {
 
   public listAll = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const sessionList = await this.sessionService.listAll(req.professional.id);
+      const session = await this.sessionService.listAll(req.professional.id);
 
       res.status(200).json({
-        data: {
-          ...sessionList,
-        },
+        session,
         message: 'listed',
       });
     } catch (error) {
@@ -56,7 +53,7 @@ class SessionController {
       const { id } = req.params;
       const session = await this.sessionService.getOne(+id, req.professional.id);
       
-      res.status(200).json(session ? { data: { ...session }, message: 'listed'} : { message: 'Recurso não encontrado'});
+      res.status(200).json(session ? { session, message: 'listed'} : { message: 'Sessão não encontrada'});
     } catch (error) {
       next(error);
     }
@@ -67,7 +64,7 @@ class SessionController {
       const { id } = req.params;
       const session = await this.sessionService.delete(+id, req.professional.id);
 
-      res.status(200).json(session ? { data: { ...session }, message: 'deleted' } : { message: 'Recurso não encontrado' });
+      res.status(200).json(session ? { session, message: 'deleted' } : { message: 'Sessão não encontrada' });
     } catch (error) {
       next(error);
     }

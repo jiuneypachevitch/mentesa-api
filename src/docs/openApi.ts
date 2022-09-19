@@ -32,6 +32,7 @@ const options = {
     '**/professional.yaml',
     '**/patient.yaml',
     '**/resource.yaml',
+    '**/session.yaml',
   ],
 };
 

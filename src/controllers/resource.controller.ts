@@ -12,9 +12,7 @@ class ResourceController {
       const resource = await this.resourceService.create(resourceData, req.professional.id);
 
       res.status(201).json({
-        data: {
-          ...resource,
-        },
+        resource,
         message: 'created',
       });
     } catch (error) {
@@ -28,9 +26,10 @@ class ResourceController {
       const { id } = req.params;
       const resource = await this.resourceService.update(resourceData, +id, req.professional.id);
 
-      res.status(200).json(
-        { data: { ...resource }, message: 'updated' }
-      );
+      res.status(200).json({ 
+        resource, 
+        message: 'updated' 
+      });
     } catch (error) {
       next(error);
     }
@@ -38,12 +37,10 @@ class ResourceController {
 
   public listAll = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const resourceList = await this.resourceService.listAll(req.professional.id);
+      const resource = await this.resourceService.listAll(req.professional.id);
 
       res.status(200).json({
-        data: {
-          ...resourceList,
-        },
+        resource,
         message: 'listed',
       });
     } catch (error) {
@@ -56,7 +53,7 @@ class ResourceController {
       const { id } = req.params;
       const resource = await this.resourceService.getOne(+id, req.professional.id);
       
-      res.status(200).json(resource ? { data: { ...resource }, message: 'listed'} : { message: 'Recurso não encontrado'});
+      res.status(200).json(resource ? { resource, message: 'listed'} : { message: 'Recurso não encontrado'});
     } catch (error) {
       next(error);
     }
@@ -67,7 +64,7 @@ class ResourceController {
       const { id } = req.params;
       const resource = await this.resourceService.delete(+id, req.professional.id);
 
-      res.status(200).json(resource ? { data: { ...resource }, message: 'deleted' } : { message: 'Recurso não encontrado' });
+      res.status(200).json(resource ? { resource, message: 'deleted' } : { message: 'Recurso não encontrado' });
     } catch (error) {
       next(error);
     }

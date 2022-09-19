@@ -1,21 +1,21 @@
 paths:
-  /resources:
+  /sessions:
     get:
-      tags: ['Recursos']
-      summary: Listar todos os recursos
-      operationId: resources
+      tags: ['Sessões']
+      summary: Listar todas as sessões
+      operationId: sessions
       responses:
         '200':
           description: 'Operação realizada com sucesso'
           content:          
             application/json:
-              schema:
+              schema: 
                 type: object
                 properties:
-                  resource:
+                  session:
                     type: array
                     items: 
-                      $ref: '#/components/schemas/ResourceOutput'
+                      $ref: '#/components/schemas/SessionOutput'
                   message:
                     type: string
                     description: Operação executada
@@ -26,14 +26,14 @@ paths:
       security:
         - bearer: []
     post:
-      tags: ['Recursos']
-      summary: Cria um novo recurso
-      operationId: resources
+      tags: ['Sessões']
+      summary: Cria uma nova sessão
+      operationId: sessions
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ResourceInput'
+              $ref: '#/components/schemas/SessionInput'
               required:
                 - title 
                 - category
@@ -41,7 +41,7 @@ paths:
         '200':
           description: 'Operação realizada com sucesso'
           content:          
-            $ref: '#/definitions/ResourceOperationOutput'
+            $ref: '#/definitions/SessionOperationOutput'
         '401':
           description: 'Necessita autenticação'
           content:
@@ -56,18 +56,18 @@ paths:
             $ref: '#/components/schemas/Message'
       security:
         - bearer: []
-  /resources/{id}:
+  /sessions/{id}:
     get:
-      tags: ['Recursos']
-      summary: Recuperar dados do recurso
-      operationId: resources/{id}
+      tags: ['Sessões']
+      summary: Recuperar dados da sessão
+      operationId: sessions/{id}
       parameters:
-        - $ref: '#/definitions/ResourceId'
+        - $ref: '#/definitions/SessionId'
       responses:
         '200':
           description: 'Operação realizada com sucesso'
           content:          
-            $ref: '#/definitions/ResourceOperationOutput'
+            $ref: '#/definitions/SessionOperationOutput'
         '401':
           description: 'Necessita autenticação'
           content:
@@ -79,21 +79,21 @@ paths:
       security:
         - bearer: []
     patch:
-      tags: ['Recursos']
-      summary: Alterar dados do recurso
-      operationId: resources/{id}
+      tags: ['Sessões']
+      summary: Alterar dados da sessão
+      operationId: sessions/{id}
       parameters:
-        - $ref: '#/definitions/ResourceId'
+        - $ref: '#/definitions/SessionId'
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ResourceInput'
+              $ref: '#/components/schemas/SessionInput'
       responses:
         '200':
           description: 'Operação realizada com sucesso'
           content:          
-            $ref: '#/definitions/ResourceOperationOutput'
+            $ref: '#/definitions/SessionOperationOutput'
         '401':
           description: 'Necessita autenticação'
           content:
@@ -109,16 +109,16 @@ paths:
       security:
         - bearer: []
     delete:
-      tags: ['Recursos']
-      summary: Remove um recurso
-      operationId: resources/{id}
+      tags: ['Sessões']
+      summary: Remove uma sessão
+      operationId: sessions/{id}
       parameters:
-        - $ref: '#/definitions/ResourceId'
+        - $ref: '#/definitions/SessionId'
       responses:
         '200':
           description: 'Operação realizada com sucesso'
           content:          
-            $ref: '#/definitions/ResourceOperationOutput'
+            $ref: '#/definitions/SessionOperationOutput'
         '401':
           description: 'Necessita autenticação'
           content:
@@ -135,39 +135,56 @@ paths:
         - bearer: []
 components: 
   schemas:
-    ResourceOutput:
+    SessionOutput:
       type: object
       properties:
         id:
           type: integer
-          description: Id do recurso
+          description: Id da sessão
+        subject:
+          type: string
+          description: Assunto abordado na sessão
+        duration:
+          type: integer
+          description: Duração da sessão
         professionalId:
           type: integer
-          description: Id do profissional que criou o recurso
-        title:
-          type: string
-          description: Título do recurso
-        category:
-          type: string
-          description: Categoria do recurso
+          description: Id do profissional que realizou a sessão
+        scheduleId:
+          type: integer
+          description: Id do agendamento que gerou a sessão
+        resourceId:
+          type: integer
+          description: Id do recurso utilizado na sessão
         createdAt:
           type: string
           description: Data de criação do recurso
         updateddAt:
           type: string
           description: Data de alteração do recurso
-    ResourceInput:
+    SessionInput:
       type: object
       properties:
-        title:
+        subject:
           type: string
-          description: Título do recurso
-        category:
-          type: string
-          description: Categoria do recurso
+          description: Assunto abordado na sessão
+        duration:
+          type: integer
+          description: Duração da sessão
+        professionalId:
+          type: integer
+          description: Id do profissional que realizou a sessão
+        scheduleId:
+          type: integer
+          description: Id do agendamento que gerou a sessão
+        resourceId:
+          type: integer
+          description: Id do recurso utilizado na sessão
       example:
-        title: Desenhos
-        category: Lúdicos
+        subject: Luto
+        duration: 50
+        scheduleId: 1
+        resourceId: 1
     Message:      
       application/json:
         schema:
@@ -177,22 +194,22 @@ components:
               type: string              
               description: Operação executada
 definitions:          
-  ResourceId:
+  SessionId:
     name: id
     in: path
-    description: 'Id do recurso'
+    description: 'Id da sessão'
     required: true
     schema:
       type: integer
       format: int32
       example: 1
-  ResourceOperationOutput:
+  SessionOperationOutput:
     application/json:
       schema:
         type: object
         properties:
-          resource:
-            $ref: '#/components/schemas/ResourceOutput'
+          session:
+            $ref: '#/components/schemas/SessionOutput'
           message:
             type: string
             description: Operação executada

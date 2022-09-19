@@ -12,7 +12,7 @@ class SessionService {
   public create = async (sessionData: CreateSessionDto, professionalId: number): Promise<Resource> => {
     if (isEmpty(sessionData))
         throw new HttpException(400, 'Nenhum dado foi informado');
-    //try {
+    try {
         const createSessionData = await this.session.create({
             data: {
                 subject: sessionData.subject,
@@ -23,9 +23,9 @@ class SessionService {
             },
         });
         return createSessionData;
-    //} catch (error) {
-    //    throw new PrismaException(error, 'Sessão');
-    //}
+    } catch (error) {
+        throw new PrismaException(error, 'Sessão');
+    }
   };
 
   public update = async (sessionData: UpdateSessionDto, id: number, professionalId: number): Promise<number> => {
