@@ -12,7 +12,9 @@ class ResourceController {
       const resource = await this.resourceService.create(resourceData, req.professional.id);
 
       res.status(201).json({
-        resource,
+        data: {
+          resource
+        },
         message: 'created',
       });
     } catch (error) {
@@ -27,7 +29,9 @@ class ResourceController {
       const resource = await this.resourceService.update(resourceData, +id, req.professional.id);
 
       res.status(200).json({ 
-        resource, 
+        data: { 
+          resource 
+        }, 
         message: 'updated' 
       });
     } catch (error) {
@@ -40,7 +44,9 @@ class ResourceController {
       const resource = await this.resourceService.listAll(req.professional.id);
 
       res.status(200).json({
-        resource,
+        data: {
+          resource
+        },
         message: 'listed',
       });
     } catch (error) {
@@ -53,7 +59,7 @@ class ResourceController {
       const { id } = req.params;
       const resource = await this.resourceService.getOne(+id, req.professional.id);
       
-      res.status(200).json(resource ? { resource, message: 'listed'} : { message: 'Recurso não encontrado'});
+      res.status(200).json(resource ? { data: { resource }, message: 'listed'} : { message: 'Recurso não encontrado'});
     } catch (error) {
       next(error);
     }
@@ -64,7 +70,7 @@ class ResourceController {
       const { id } = req.params;
       const resource = await this.resourceService.delete(+id, req.professional.id);
 
-      res.status(200).json(resource ? { resource, message: 'deleted' } : { message: 'Recurso não encontrado' });
+      res.status(200).json(resource ? { data: { resource }, message: 'deleted' } : { message: 'Recurso não encontrado' });
     } catch (error) {
       next(error);
     }

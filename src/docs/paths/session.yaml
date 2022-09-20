@@ -208,8 +208,11 @@ definitions:
       schema:
         type: object
         properties:
-          session:
-            $ref: '#/components/schemas/SessionOutput'
+          data:
+            type: object
+            properties:  
+              session:
+                $ref: '#/components/schemas/SessionOutput'
           message:
             type: string
             description: Operação executada

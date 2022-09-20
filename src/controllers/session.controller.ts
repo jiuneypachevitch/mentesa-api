@@ -12,7 +12,9 @@ class SessionController {
       const session = await this.sessionService.create(sessionData, req.professional.id);
 
       res.status(201).json({
-        session,
+        data: {
+            session
+        },
         message: 'created',
       });
     } catch (error) {
@@ -27,7 +29,9 @@ class SessionController {
       const session = await this.sessionService.update(sessionData, +id, req.professional.id);
 
       res.status(200).json({ 
-        session, 
+        data: {
+            session
+        },
         message: 'updated' 
       });
     } catch (error) {
@@ -40,7 +44,9 @@ class SessionController {
       const session = await this.sessionService.listAll(req.professional.id);
 
       res.status(200).json({
-        session,
+        data: {
+          session
+        },
         message: 'listed',
       });
     } catch (error) {
@@ -53,7 +59,7 @@ class SessionController {
       const { id } = req.params;
       const session = await this.sessionService.getOne(+id, req.professional.id);
       
-      res.status(200).json(session ? { session, message: 'listed'} : { message: 'Sessão não encontrada'});
+      res.status(200).json(session ? { data: { session }, message: 'listed'} : { message: 'Sessão não encontrada'});
     } catch (error) {
       next(error);
     }
@@ -64,7 +70,7 @@ class SessionController {
       const { id } = req.params;
       const session = await this.sessionService.delete(+id, req.professional.id);
 
-      res.status(200).json(session ? { session, message: 'deleted' } : { message: 'Sessão não encontrada' });
+      res.status(200).json(session ? { data: { session }, message: 'deleted' } : { message: 'Sessão não encontrada' });
     } catch (error) {
       next(error);
     }
