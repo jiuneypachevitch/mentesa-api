@@ -1,0 +1,125 @@
+paths:
+  /sessions:
+    get:
+      tags: ['Sessões']
+      summary: Listar todos as sessões
+      operationId: sessions
+      responses:
+        '200':
+          description: 'Operação realizada com sucesso'
+      security:
+        - bearer: []
+    post:
+      tags: ['Sessões']
+      summary: Cria uma nova sessão
+      operationId: sessions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                subject:
+                  type: string
+                duration:
+                  type: integer
+                scheduleId:
+                  type: integer
+                resourceId:
+                  type: integer
+              required:
+                - subject 
+                - duration
+                - scheduleId
+                - resourceId
+              example:
+                subject: Luto
+                duration: 50
+                scheduleId: 1
+                resourceId: 1
+      responses:
+        '200':
+          description: 'Operação realizada com sucesso'
+        '409':
+          description: 'Sessão já cadastrada'
+        '500':
+          description: 'Erro interno do servidor'
+      security:
+        - bearer: []
+  /sessions/{id}:
+    get:
+      tags: ['Sessões']
+      summary: Recuperar dados da sessão
+      operationId: sessions/{id}
+      parameters:
+        - name: id
+          in: path
+          description: 'Id da sessão'
+          required: true
+          schema:
+            type: integer
+            format: int32
+            example: 1
+      responses:
+        '200':
+          description: 'Operação realizada com sucesso'
+      security:
+        - bearer: []
+    patch:
+      tags: ['Sessões']
+      summary: Alterar dados da sessão
+      operationId: sessions/{id}
+      parameters:
+        - name: id
+          in: path
+          description: 'Id da sessão'
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                subject:
+                  type: string
+                duration:
+                  type: integer
+                scheduleId:
+                  type: integer
+                resourceId:
+                  type: integer
+              example:
+                subject: Luto
+                duration: 50
+                scheduleId: 1
+                resourceId: 1
+      responses:
+        '200':
+          description: 'Operação realizada com sucesso'
+        '409':
+          description: 'Sessão já cadastrada'
+        '500':
+          description: 'Erro interno do servidor'
+      security:
+        - bearer: []
+    delete:
+      tags: ['Sessões']
+      summary: Remove uma sessão
+      operationId: sessions/{id}
+      parameters:
+        - name: id
+          in: path
+          description: 'Id da sessão'
+          required: true
+          schema:
+            type: integer
+            format: int32
+            example: 1
+      responses:
+        '200':
+          description: 'Operação realizada com sucesso'
+      security:
+        - bearer: []

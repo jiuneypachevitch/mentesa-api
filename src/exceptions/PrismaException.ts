@@ -19,7 +19,7 @@ export class PrismaException  {
                     break;
                 }
                 case 'P2025': {
-                    throw new HttpException(404, `${messageTitle} não encontrato`);
+                    throw new HttpException(404, `${messageTitle} não encontrado`);
                     break;
                 }
                 default: {
