@@ -5,7 +5,7 @@ const prisma = new PrismaClient({ log: ['query', 'info'] });
 const userData: Prisma.UserCreateInput[] = [
   {
     email: 'alice@prisma.io',
-    password: '12345678',
+    password: '$2b$08$YQwjeRAltlyhDf8tqVJmn.VBa.PzjKc.uM8T.G1fBVyDwRS5t7fDe',
     role: 'ADMIN',
     Professional: {
       create: {
@@ -15,7 +15,7 @@ const userData: Prisma.UserCreateInput[] = [
   },
   {
     email: 'nilu@prisma.io',
-    password: 'teste5678',
+    password: '$2b$08$YQwjeRAltlyhDf8tqVJmn.VBa.PzjKc.uM8T.G1fBVyDwRS5t7fDe',
     role: 'ADMIN',
     Professional: {
       create: {
@@ -25,7 +25,7 @@ const userData: Prisma.UserCreateInput[] = [
   },
   {
     email: 'mahmoud@prisma.io',
-    password: '123teste',
+    password: '$2b$08$YQwjeRAltlyhDf8tqVJmn.VBa.PzjKc.uM8T.G1fBVyDwRS5t7fDe',
     role: 'ADMIN',
     Professional: {
       create: {
@@ -78,7 +78,8 @@ const patientData: Prisma.PatientCreateInput[] = [
     User: {
       create: {
         email: 'juca@prisma.io',
-        password: '123teste',
+        password:
+          '$2b$08$YQwjeRAltlyhDf8tqVJmn.VBa.PzjKc.uM8T.G1fBVyDwRS5t7fDe',
         role: 'USER',
       },
     },
@@ -97,7 +98,8 @@ const patientData: Prisma.PatientCreateInput[] = [
     User: {
       create: {
         email: 'lara@prisma.io',
-        password: 'lara123',
+        password:
+          '$2b$08$YQwjeRAltlyhDf8tqVJmn.VBa.PzjKc.uM8T.G1fBVyDwRS5t7fDe',
         role: 'USER',
       },
     },
@@ -116,7 +118,8 @@ const patientData: Prisma.PatientCreateInput[] = [
     User: {
       create: {
         email: 'julio@prisma.io',
-        password: '546123',
+        password:
+          '$2b$08$YQwjeRAltlyhDf8tqVJmn.VBa.PzjKc.uM8T.G1fBVyDwRS5t7fDe',
         role: 'USER',
       },
     },
@@ -190,9 +193,17 @@ const scheduleData: Prisma.ScheduleCreateInput[] = [
 ];
 
 const resourceData: Prisma.ResourceCreateInput[] = [
-  { title: 'Depressão', category: 'Transe', Professional: { connect: { id: 1 } } },
-  { title: 'Ansiedade', category: 'Ferramenta', Professional: { connect: { id: 1 } }},
-  { title: 'Luto', category: 'Transe', Professional: { connect: { id: 1 } }},
+  {
+    title: 'Depressão',
+    category: 'Transe',
+    Professional: { connect: { id: 1 } },
+  },
+  {
+    title: 'Ansiedade',
+    category: 'Ferramenta',
+    Professional: { connect: { id: 1 } },
+  },
+  { title: 'Luto', category: 'Transe', Professional: { connect: { id: 1 } } },
 ];
 
 const sessionData: Prisma.SessionCreateInput[] = [

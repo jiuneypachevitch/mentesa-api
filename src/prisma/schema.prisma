@@ -80,7 +80,7 @@ model Professional {
 
   Patient Patient[]
 
-  Sessions      Session[]
+  Sessions Session[]
 
   Resources Resource[]
 
@@ -149,43 +149,41 @@ model PatientsSchedule {
 }
 
 model Resource {
-  id              Int          @unique @default(autoincrement())
-  professionalId  Int                                           @map("professional_id")
-  title           String       @db.VarChar(150)
-  category        String       @db.VarChar(30)
-  createdAt       DateTime     @default(now())                  @map("created_at")
-  updatedAt       DateTime     @updatedAt                       @map("updated_at")
+  id             Int      @unique @default(autoincrement())
+  professionalId Int      @map("professional_id")
+  title          String   @db.VarChar(150)
+  category       String   @db.VarChar(30)
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
 
-  Professional Professional    @relation(fields: [professionalId], references: [id])
-  
-  Session      Session[]
+  Professional Professional @relation(fields: [professionalId], references: [id])
 
-  @@unique([title, category])
+  Session Session[]
+
   @@id([id, professionalId])
+  @@unique([title, category])
   @@index([professionalId])
   @@map("resources")
 }
 
 model Session {
+  id             Int      @unique @default(autoincrement())
+  subject        String   @db.VarChar(150)
+  duration       Int
+  professionalId Int      @map("professional_id")
+  scheduleId     Int      @map("schedule_id")
+  resourceId     Int      @map("resource_id")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
 
-  id              Int          @unique @default(autoincrement())
-  subject         String       @db.VarChar(150)
-  duration        Int
-  professionalId  Int                                         @map("professional_id")
-  scheduleId      Int          @map("schedule_id")
-  resourceId      Int          @map("resource_id")
-  createdAt       DateTime     @default(now())                 @map("created_at")
-  updatedAt       DateTime     @updatedAt                      @map("updated_at")
+  Schedule Schedule @relation(fields: [scheduleId], references: [id])
 
-  Schedule        Schedule     @relation(fields: [scheduleId], references: [id])
+  Resource Resource @relation(fields: [resourceId], references: [id])
 
-  Resource        Resource     @relation(fields: [resourceId], references: [id])
-
-  Professional    Professional @relation(fields: [professionalId], references: [id])
+  Professional Professional @relation(fields: [professionalId], references: [id])
 
   @@id([id, professionalId])
   @@index([scheduleId])
-  
   @@map("sessions")
 }
 
