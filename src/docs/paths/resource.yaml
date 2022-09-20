@@ -191,8 +191,11 @@ definitions:
       schema:
         type: object
         properties:
-          resource:
-            $ref: '#/components/schemas/ResourceOutput'
+          data:
+            type: object
+            properties:  
+              resource:
+                $ref: '#/components/schemas/ResourceOutput'
           message:
             type: string
             description: Operação executada
