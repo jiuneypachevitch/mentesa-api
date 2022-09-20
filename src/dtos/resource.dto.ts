@@ -24,20 +24,3 @@ export class UpdateResourceDto extends CreateResourceDto {
   category: string;
 }
 
-export class UpdateResourceIdDto extends UpdateResourceDto {
-  @IsNumber()
-  id: number;
-}
-
-export class ListResourceProfessionalIdDto {
-    @IsNumber
-    professionalId: number;
-}
-
-export class DeleteResourceIdDto {
-  @IsNumber()
-  id: number;
-}
-
-export class GetResourceIdDto extends DeleteResourceIdDto {}
-

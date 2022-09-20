@@ -26,13 +26,11 @@ class ResourceController {
     try {
       const resourceData: UpdateResourceDto = req.body;
       const { id } = req.params;
-      const count = await this.resourceService.update({ ...resourceData, id: +id }, req.professional.id);
-      let result = { message: 'Recurso não encontrado' };
-      if (count != 0) {
-        const resource = await this.resourceService.getOne({ id: +id }, req.professional.id);
-        if (resource) result = { data: { ...resource }, message: 'updated' }
-      }
-      res.status(200).json(result);
+      const resource = await this.resourceService.update(resourceData, +id, req.professional.id);
+
+      res.status(200).json(
+        { data: { ...resource }, message: 'updated' }
+      );
     } catch (error) {
       next(error);
     }
@@ -56,9 +54,9 @@ class ResourceController {
   public getOne = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;
-      const resource = await this.resourceService.getOne({ id: +id }, req.professional.id);
-      const result = resource ? { data: { ...resource }, message: 'listed'} : { message: 'Recurso não encontrado'};
-      res.status(200).json(result);
+      const resource = await this.resourceService.getOne(+id, req.professional.id);
+      
+      res.status(200).json(resource ? { data: { ...resource }, message: 'listed'} : { message: 'Recurso não encontrado'});
     } catch (error) {
       next(error);
     }
@@ -67,9 +65,9 @@ class ResourceController {
   public delete = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { id } = req.params;
-      const count = await this.resourceService.delete({ id: +id }, req.professional.id);
-      const result = count != 0 ? { message: 'deleted' } : { message: 'Recurso não encontrado' };
-      res.status(200).json(result);
+      const resource = await this.resourceService.delete(+id, req.professional.id);
+
+      res.status(200).json(resource ? { data: { ...resource }, message: 'deleted' } : { message: 'Recurso não encontrado' });
     } catch (error) {
       next(error);
     }

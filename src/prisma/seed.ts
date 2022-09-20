@@ -209,6 +209,11 @@ const sessionData: Prisma.SessionCreateInput[] = [
         id: 1,
       },
     },
+    Professional: {
+      connect: {
+        id: 1,
+      },
+    },
   },
   {
     subject: 'Luto Familiar',
@@ -221,6 +226,11 @@ const sessionData: Prisma.SessionCreateInput[] = [
     Resource: {
       connect: {
         id: 3,
+      },
+    },
+    Professional: {
+      connect: {
+        id: 1,
       },
     },
   },

@@ -1,187 +1,98 @@
-import { Schedule } from '@prisma/client';
+import { hash } from 'bcrypt';
+import { CreateResourceDto, UpdateResourceIdDto, DeleteResourceIdDto, GetResourceIdDto, ListResourceProfessionalIdDto }from '@dtos/resource.dto';
 import { HttpException } from '@exceptions/HttpException';
+import { PrismaException } from '@exceptions/PrismaException';
 import { isEmpty } from '@utils/util';
 import client from '@/prisma/client';
-import { CreateScheduleDto } from '@/dtos/schedule.dto';
-import dayjs from 'dayjs';
+import { Resource } from '@prisma/client';
 
-class ScheduleService {
-  public schedule = client.schedule;
+class SessionService {
+  private resource = client.resource;  
 
-  public async findAllSessions(professionalId: number): Promise<Schedule[]> {
-    if (isEmpty(professionalId))
-      throw new HttpException(400, 'Id do profissional não foi informado');
-
-    const allSchedules: Schedule[] = await this.schedule.findMany({
-      where: {
-        professionalId,
-      },
-      include: {
-        PatientsSchedule: {
-          where: {
-            Patient: {
-              professionalId,
+  public create = async (resourceData: CreateResourceDto, professionalId: number): Promise<Resource> => {
+    if (isEmpty(resourceData))
+        throw new HttpException(400, 'Nenhum dado foi informado');
+    try {
+        const createResourceData = await this.resource.create({
+            data: {
+                title: resourceData.title,
+                category: resourceData.category,
+                professionalId
             },
-          },
-          include: {
-            Patient: true,
-          },
-        },
-      },
-    });
+        });
+        return createResourceData;
+    } catch (error) {
+        throw new PrismaException(error, 'Recurso');
+    }
+  };
 
-    return allSchedules;
-  }
-
-  public async findScheduleById(
-    scheduleId: number,
-    professionalId: number
-  ): Promise<Schedule> {
-    if (isEmpty(scheduleId))
-      throw new HttpException(400, 'Id do agendamento não foi informado');
-
-    if (isEmpty(professionalId))
-      throw new HttpException(400, 'Id do profissional não foi informado');
-
-    const findSchedule = await this.schedule.findFirst({
-      where: {
-        AND: [
-          {
-            id: scheduleId,
-          },
-          { professionalId },
-        ],
-      },
-      include: {
-        PatientsSchedule: {
-          where: {
-            Patient: {
-              professionalId,
+  public update = async (resourceData: UpdateResourceDto, id: number, professionalId: number): Promise<number> => {
+    if (isEmpty(resourceData))
+        throw new HttpException(400, 'Nenhum dado foi informado');
+    
+    try {
+        const updateResourceData = await this.resource.update({
+            where: {
+                id_professionalId: {
+                    id,
+                    professionalId
+                }
             },
-          },
-          include: {
-            Patient: true,
-          },
-        },
-      },
-    });
+            data: {
+                ...resourceData,
+            },
+        });
+        return updateResourceData;
+    } catch (error) {
+       throw new PrismaException(error, 'Recurso');
+    }
+  };
 
-    if (!findSchedule) throw new HttpException(409, 'Agendamento inexistente');
+  public listAll = async (professionalId: number): Promise<Resource>[] => {
+    try {
+        const listResourceData = await this.resource.findMany({
+            where: {
+                professionalId
+            }
+        });
+        return listResourceData;
+    } catch (error) {
+        throw new PrismaException(error, 'Recurso');
+    }
+  };
 
-    return findSchedule;
-  }
+  public getOne = async (id: number, professionalId: number): Promise<Resource> => {
+    try {
+        const resourceData = await this.resource.findUnique({
+            where: {
+                id_professionalId: {
+                    id ,
+                    professionalId,
+                },
+            }
+        });
 
-  public async create(
-    scheduleData: CreateScheduleDto,
-    professionalId: number
-  ): Promise<Schedule> {
-    if (isEmpty(scheduleData))
-      throw new HttpException(400, 'Nenhum dado foi informado');
+        return resourceData;
+    } catch (error) {
+        throw new PrismaException(error, 'Recurso');
+    }
+  };
 
-    if (isEmpty(professionalId))
-      throw new HttpException(400, 'Id do profissional não foi informado');
-
-    const createPatientlData: Promise<Schedule> = this.schedule.create({
-      data: {
-        sessionDate: new Date(scheduleData.sessionDate),
-        status: scheduleData.status,
-        type: scheduleData.type,
-        scheduleType: scheduleData.scheduleType,
-        Professional: {
-          connect: {
-            id: professionalId,
-          },
-        },
-        PatientsSchedule: {
-          createMany: {
-            data: scheduleData.patientsSchedule,
-          },
-        },
-      },
-    });
-
-    return createPatientlData;
-  }
-
-  public async updateSchedule(
-    scheduleId: number,
-    professionalId: number,
-    scheduleData: CreateScheduleDto
-  ): Promise<Schedule> {
-    if (isEmpty(scheduleData))
-      throw new HttpException(400, 'Nenhum dado foi informado');
-
-    if (isEmpty(professionalId))
-      throw new HttpException(400, 'Id do profissional não foi informado');
-
-    const findSchedule = await this.schedule.findFirst({
-      where: {
-        AND: [
-          {
-            id: scheduleId,
-          },
-          { professionalId },
-        ],
-      },
-    });
-
-    if (!findSchedule) throw new HttpException(409, 'Agendamento inexistente');
-
-    const updateSchedule = await this.schedule.update({
-      where: { id: scheduleId },
-      data: {
-        sessionDate: new Date(scheduleData.sessionDate),
-        status: scheduleData.status,
-        type: scheduleData.type,
-        scheduleType: scheduleData.scheduleType,
-        Professional: {
-          connect: {
-            id: professionalId,
-          },
-        },
-        PatientsSchedule: {
-          deleteMany: {
-            scheduleId,
-          },
-          createMany: {
-            data: scheduleData.patientsSchedule,
-          },
-        },
-      },
-    });
-
-    return updateSchedule;
-  }
-
-  public async deletePatient(
-    scheduleId: number,
-    professionalId: number
-  ): Promise<Schedule> {
-    if (isEmpty(scheduleId))
-      throw new HttpException(400, 'Id do paciente não foi informado');
-
-    if (isEmpty(professionalId))
-      throw new HttpException(400, 'Id do profissional não foi informado');
-
-    const findSchedule = await this.schedule.findFirst({
-      where: {
-        AND: [
-          {
-            id: scheduleId,
-          },
-          { professionalId },
-        ],
-      },
-    });
-
-    if (!findSchedule) throw new HttpException(409, 'Agendamento inexistente');
-
-    const deleteScheduleData = await this.schedule.delete({
-      where: { id: scheduleId },
-    });
-
-    return deleteScheduleData;
-  }
+  public delete = async (id: number, professionalId: number): Promise<Resource> => {
+    try {
+        const resourceData = await this.resource.delete({
+            where: {
+                id_professionalId: {
+                    id,
+                    professionalId,
+                },
+            }
+        });
+        return resourceData;
+    } catch (error) {
+        throw new PrismaException(error, 'Recurso');
+    }
+  };
 }
 
-export { ScheduleService };
+export { SessionService };
