@@ -13,7 +13,6 @@ import morgan from 'morgan';
 import swaggerUi from 'swagger-ui-express';
 import errorMiddleware from '@middlewares/error.middleware';
 import { logger, stream } from '@utils/logger';
-import { apiDocs } from '@docs/apiDocs';
 import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from '@config';
 import { Routes } from './interfaces/routes.interface';
 import { swaggerSpec } from './docs/openApi';

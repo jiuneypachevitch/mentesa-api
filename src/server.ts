@@ -6,6 +6,7 @@ import { SessionRoute } from '@routes/session.route';
 import { UserRoute } from './routes/user.route';
 import { ProfessionalRoute } from './routes/professional.route';
 import { PatientRoute } from './routes/patient.route';
+import { ScheduleRoute } from './routes/schedule.route';
 
 validateEnv();
 
@@ -16,6 +17,7 @@ const app = new App([
   new ProfessionalRoute(),
   new PatientRoute(),
   new SessionRoute(),
+  new ScheduleRoute(),
 ]);
 
 app.listen();
