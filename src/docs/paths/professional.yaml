@@ -3,6 +3,7 @@ paths:
     get:
       tags: ['Profissional']
       summary: Recuperar dados do profissional
+      description: 'Rota responsável por recuperar dados do profissional'
       operationId: professionals/{id}
       parameters:
         - name: id
@@ -21,6 +22,7 @@ paths:
     put:
       tags: ['Profissional']
       summary: Alterar dados do profissional
+      description: 'Rota responsável por alterar dados do profissional'
       operationId: professionals/{id}
       parameters:
         - name: id
@@ -34,28 +36,37 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                crp:
-                  type: string
-                cellphone:
-                  type: string
-                approach:
-                  type: string
-              required:
-                - name
-                - crp
-                - cellphone
-                - approach
-              example:
-                name: Juca Bala Oliveira da Silva
-                crp: '12345684787'
-                cellphone: '67981799939'
-                approach: Terapia Cognitiva
+              allOf:
+                - $ref: '#/components/schemas/Professional'
       responses:
         '200':
           description: 'Operação realizada com sucesso'
       security:
         - bearer: []
+components:
+  schemas:
+    Professional:
+      type: object
+      properties:
+        name:
+          type: string
+        crp:
+          type: string
+        email:
+          type: string
+        cellphone:
+          type: string
+        approach:
+          type: string
+      required:
+        - name
+        - crp
+        - email
+        - cellphone
+        - approach
+      example:
+        name: 'Nome Profissional'
+        crp: '12345684787'
+        email: 'email@email.com'
+        cellphone: '(67)98100-0000'
+        approach: 'Terapia Cognitiva'

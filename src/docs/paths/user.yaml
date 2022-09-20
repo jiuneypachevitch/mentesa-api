@@ -17,20 +17,25 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                email:
-                  type: string
-                password:
-                  type: string
-              required:
-                - email
-                - password
-              example:
-                email: 'email.gmail.com'
-                password: 'teste123'
+              allOf:
+                - $ref: '#/components/schemas/User'
       responses:
         '200':
           description: 'Operação realizada com sucesso'
       security:
         - bearer: []
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - email
+        - password
+      example:
+        email: 'email@email.com'
+        password: '12345678'

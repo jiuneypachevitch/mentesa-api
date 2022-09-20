@@ -19,12 +19,25 @@ class PatientService {
     return allPatients;
   }
 
-  public async findPatientById(patientId: number): Promise<Patient> {
+  public async findPatientById(
+    patientId: number,
+    professionalId: number
+  ): Promise<Patient> {
     if (isEmpty(patientId))
       throw new HttpException(400, 'Id do paciente não foi informado');
 
-    const findPatient: Patient = await this.patient.findUnique({
-      where: { id: patientId },
+    if (isEmpty(professionalId))
+      throw new HttpException(400, 'Id do profissional não foi informado');
+
+    const findPatient = await this.patient.findFirst({
+      where: {
+        AND: [
+          {
+            id: patientId,
+          },
+          { professionalId },
+        ],
+      },
     });
 
     if (!findPatient) throw new HttpException(409, 'Paciente inexistente');
@@ -38,6 +51,9 @@ class PatientService {
   ): Promise<Patient> {
     if (isEmpty(patientData))
       throw new HttpException(400, 'Nenhum dado foi informado');
+
+    if (isEmpty(professionalId))
+      throw new HttpException(400, 'Id do profissional não foi informado');
 
     const findPatient = await this.patient.findMany({
       where: {
@@ -76,13 +92,24 @@ class PatientService {
 
   public async updatePatient(
     patientId: number,
+    professionalId: number,
     patientData: CreatePatientDto
   ): Promise<Patient> {
     if (isEmpty(patientData))
       throw new HttpException(400, 'Nenhum dado foi informado');
 
-    const findPatient: Patient = await this.patient.findUnique({
-      where: { id: patientId },
+    if (isEmpty(professionalId))
+      throw new HttpException(400, 'Id do profissional não foi informado');
+
+    const findPatient = await this.patient.findFirst({
+      where: {
+        AND: [
+          {
+            id: patientId,
+          },
+          { professionalId },
+        ],
+      },
     });
 
     if (!findPatient) throw new HttpException(409, 'Paciente inexistente');
@@ -118,12 +145,25 @@ class PatientService {
     return updatePatient;
   }
 
-  public async deletePatient(patientId: number): Promise<Patient> {
+  public async deletePatient(
+    patientId: number,
+    professionalId: number
+  ): Promise<Patient> {
     if (isEmpty(patientId))
       throw new HttpException(400, 'Id do paciente não foi informado');
 
-    const findPatient: Patient = await this.patient.findUnique({
-      where: { id: patientId },
+    if (isEmpty(professionalId))
+      throw new HttpException(400, 'Id do profissional não foi informado');
+
+    const findPatient = await this.patient.findFirst({
+      where: {
+        AND: [
+          {
+            id: patientId,
+          },
+          { professionalId },
+        ],
+      },
     });
 
     if (!findPatient) throw new HttpException(409, 'Paciente inexistente');
