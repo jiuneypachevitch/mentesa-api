@@ -1,0 +1,70 @@
+paths:
+  /dashboards:
+    get:
+      tags: ["Dashboard"]
+      summary: Informação da dashboard
+      description: "Rota responsável por listar dados do dashboard do usuário logado"
+      operationId: dashboards
+      responses:
+        "200":
+          description: 'Operação realizada com sucesso'
+          content:          
+            $ref: '#/definitions/DashboardOperationOutput'
+        "401":
+          description: "Necessita autenticação"
+          content:
+            $ref: "#/components/schemas/Message"
+        "500":
+          description: "Erro interno do servidor"
+          content:
+            $ref: "#/components/schemas/Message"
+      security:
+        - bearer: []
+components:
+  schemas:
+    DashboardOutput:
+      type: object
+      properties:
+        schedulePerDay:
+          type: integer
+          description: Número de agendamentos do dia
+        schedulePerMonth:
+          type: integer
+          description: Número de agendamentos do mês
+        scheduleCanceledPerMonth:
+          type: integer
+          description: Número de agendamentos cancealdos do mês
+        totalPatientsNumber:
+          type: integer
+          description: Número de pacientes cadastrados pelo profissional
+        totalIndividualSchedule:
+          type: integer
+          description: Número de agendamentos do tipo individual
+        totalCoupleSchedule:
+          type: integer
+          description: Número de agendamentos do tipo dupla
+        totalGroupSchedule:
+          type: integer
+          description: Número de agendamentos do tipo em grupo
+    Message:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+              description: Operação executada
+definitions:
+  DashboardOperationOutput:
+    application/json:
+      schema:
+        type: object
+        properties:
+          data:
+            type: object
+            properties:
+              dashboard:
+                $ref: "#/components/schemas/DashboardOutput"
+          message:
+            type: string
+            description: Operação executada
