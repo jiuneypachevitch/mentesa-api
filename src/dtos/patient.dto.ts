@@ -11,7 +11,7 @@ import {
 
 export class CreatePatientDto {
   @IsString()
-  @Length(3, 150)
+  @Length(3, 150, { message: 'nome deve conter de 3 a 150 dígitos' })
   public name: string;
 
   @IsString()

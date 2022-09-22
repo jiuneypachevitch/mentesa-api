@@ -2,11 +2,11 @@ import { IsEmail, IsString, Length, MaxLength } from 'class-validator';
 
 export class UpdateProfessionalDto {
   @IsString()
-  @Length(3, 150)
+  @Length(3, 150, { message: 'nome deve conter de 3 a 150 dígitos' })
   public name: string;
 
   @IsString()
-  @Length(1, 20)
+  @Length(1, 20, { message: 'crp deve conter de 1 a 20 dígitos' })
   public crp: string;
 
   @IsString()
