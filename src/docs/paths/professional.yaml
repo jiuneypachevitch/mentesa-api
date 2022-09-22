@@ -54,6 +54,22 @@ paths:
           description: 'Operação realizada com sucesso'
       security:
         - bearer: []
+    put:     
+      tags: ['Profissional']
+      summary: Alterar dados do profissional
+      description: 'Rota responsável por alterar dados do perfil do profissional'
+      operationId: professionals/profile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/Professional'
+      responses:
+        '200':
+          description: 'Operação realizada com sucesso'
+      security:
+        - bearer: []
 components:
   schemas:
     Professional:

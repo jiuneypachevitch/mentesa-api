@@ -76,7 +76,7 @@ class ProfessionalService {
   ): Promise<Professional> {
     if (isEmpty(professionalData))
       throw new HttpException(400, 'Nenhum dado foi informado');
-
+console.log('professionalData', professionalData);
     try {
         const updateProfessional = await this.professional.update({
             where: { id },

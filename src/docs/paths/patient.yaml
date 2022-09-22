@@ -57,12 +57,39 @@ paths:
           application/json:
             schema:
               allOf:
-                - $ref: '#/components/schemas/Professional'
+                - $ref: '#/components/schemas/Patient'
       responses:
         '200':
           description: 'Operação realizada com sucesso'
       security:
         - bearer: []
+  /patients/profile:
+    get:
+      tags: ['Pacientes']
+      summary: Recuperar dados do paciente
+      description: 'Rota responsável por recuperar dados do perfil do paciente'
+      operationId: patients/profile
+      responses:
+        '200':
+          description: 'Operação realizada com sucesso'
+      security:
+        - bearer: []
+    put:     
+      tags: ['Pacientes']
+      summary: Alterar dados do paciente
+      description: 'Rota responsável por alterar dados do perfil do paciente'
+      operationId: patients/profile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/Patient'
+      responses:
+        '200':
+          description: 'Operação realizada com sucesso'
+      security:
+        - bearer: []     
 components:
   schemas:
     Patient:
