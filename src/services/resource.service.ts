@@ -1,96 +1,108 @@
-import { hash } from 'bcrypt';
-import { CreateResourceDto, UpdateResourceDto }from '@dtos/resource.dto';
-import { HttpException } from '@exceptions/HttpException';
-import { PrismaException } from '@exceptions/PrismaException';
-import { isEmpty } from '@utils/util';
-import client from '@/prisma/client';
-import { Resource } from '@prisma/client';
+import { CreateResourceDto, UpdateResourceDto } from "@dtos/resource.dto";
+import { HttpException } from "@exceptions/HttpException";
+import { PrismaException } from "@exceptions/PrismaException";
+import { isEmpty } from "@utils/util";
+import client from "@/prisma/client";
+import { Resource } from "@prisma/client";
 
 class ResourceService {
-  private resource = client.resource;  
+  private resource = client.resource;
 
-  public create = async (resourceData: CreateResourceDto, professionalId: number): Promise<Resource> => {
+  public create = async (
+    resourceData: CreateResourceDto,
+    professionalId: number
+  ): Promise<Resource> => {
     if (isEmpty(resourceData))
-        throw new HttpException(400, 'Nenhum dado foi informado');
+      throw new HttpException(400, "Nenhum dado foi informado");
     try {
-        const createResourceData = await this.resource.create({
-            data: {
-                title: resourceData.title,
-                category: resourceData.category,
-                professionalId
-            },
-        });
-        return createResourceData;
+      const createResourceData = await this.resource.create({
+        data: {
+          title: resourceData.title,
+          category: resourceData.category,
+          professionalId,
+        },
+      });
+      return createResourceData;
     } catch (error) {
-        throw new PrismaException(error, 'Recurso');
+      throw new PrismaException(error, "Recurso");
     }
   };
 
-  public update = async (resourceData: UpdateResourceDto, id: number, professionalId: number): Promise<number> => {
+  public update = async (
+    resourceData: UpdateResourceDto,
+    id: number,
+    professionalId: number
+  ): Promise<number> => {
     if (isEmpty(resourceData))
-        throw new HttpException(400, 'Nenhum dado foi informado');
-    
+      throw new HttpException(400, "Nenhum dado foi informado");
+
     try {
-        const updateResourceData = await this.resource.update({
-            where: {
-                id_professionalId: {
-                    id,
-                    professionalId
-                }
-            },
-            data: {
-                ...resourceData,
-            },
-        });
-        return updateResourceData;
+      const updateResourceData = await this.resource.update({
+        where: {
+          id_professionalId: {
+            id,
+            professionalId,
+          },
+        },
+        data: {
+          ...resourceData,
+        },
+      });
+      return updateResourceData;
     } catch (error) {
-       throw new PrismaException(error, 'Recurso');
+      throw new PrismaException(error, "Recurso");
     }
   };
 
   public listAll = async (professionalId: number): Promise<Resource>[] => {
     try {
-        const listResourceData = await this.resource.findMany({
-            where: {
-                professionalId
-            }
-        });
-        return listResourceData;
+      const listResourceData = await this.resource.findMany({
+        where: {
+          professionalId,
+        },
+      });
+      return listResourceData;
     } catch (error) {
-        throw new PrismaException(error, 'Recurso');
+      throw new PrismaException(error, "Recurso");
     }
   };
 
-  public getOne = async (id: number, professionalId: number): Promise<Resource> => {
+  public getOne = async (
+    id: number,
+    professionalId: number
+  ): Promise<Resource> => {
     try {
-        const resourceData = await this.resource.findUnique({
-            where: {
-                id_professionalId: {
-                    id ,
-                    professionalId,
-                },
-            }
-        });
+      const resourceData = await this.resource.findUnique({
+        where: {
+          id_professionalId: {
+            id,
+            professionalId,
+          },
+        },
+      });
 
-        return resourceData;
+      return resourceData;
     } catch (error) {
-        throw new PrismaException(error, 'Recurso');
+      throw new PrismaException(error, "Recurso");
     }
   };
 
-  public delete = async (id: number, professionalId: number): Promise<Resource> => {
+  public delete = async (
+    id: number,
+    professionalId: number
+  ): Promise<Resource> => {
     try {
-        const resourceData = await this.resource.delete({
-            where: {
-                id_professionalId: {
-                    id,
-                    professionalId,
-                },
-            }
-        });
-        return resourceData;
+      const resourceData = await this.resource.delete({
+        where: {
+          id_professionalId: {
+            id,
+            professionalId,
+          },
+        },
+      });
+      return resourceData;
     } catch (error) {
-        throw new PrismaException(error, 'Recurso');
+      throw new PrismaException(error, "Recurso");
     }
   };
 }
