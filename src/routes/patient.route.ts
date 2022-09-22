@@ -42,6 +42,17 @@ class PatientRoute implements Routes {
       authMiddleware,
       this.patientController.deletePatient
     );
+    this.router.get(
+      `${this.path}/profile`,
+      authMiddleware,
+      this.patientController.getPatientProfile
+    );
+    this.router.put(
+      `${this.path}/profile`,
+      authMiddleware,
+      validationMiddleware(CreatePatientDto, 'body', true),
+      this.patientController.setPatientProfile
+    );
   }
 }
 
