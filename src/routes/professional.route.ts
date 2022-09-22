@@ -26,6 +26,17 @@ class ProfessionalRoute implements Routes {
       validationMiddleware(UpdateProfessionalDto, 'body', true),
       this.professionalController.updateProfessional
     );
+    this.router.get(
+      `${this.path}/profile`,
+      authMiddleware,
+      this.professionalController.getProfessionalProfile
+    );
+    this.router.put(
+      `${this.path}/profile`,
+      authMiddleware,
+      validationMiddleware(UpdateProfessionalDto, 'body', true),
+      this.professionalController.setProfessionalProfile
+    );
   }
 }
 

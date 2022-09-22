@@ -1,5 +1,6 @@
 import { Patient } from '@prisma/client';
 import { HttpException } from '@exceptions/HttpException';
+import { PrismaException } from '@exceptions/PrismaException';
 import { isEmpty } from '@utils/util';
 import { CreatePatientDto } from '@/dtos/patient.dto';
 import { hash } from 'bcrypt';
@@ -173,6 +174,37 @@ class PatientService {
     });
 
     return deletePatientData;
+  }
+  
+  public async getPatientProfile(id: number): Promise<Patient> {
+    if (isEmpty(id))
+      throw new HttpException(400, 'Id do paciente não foi informado');
+
+    const findPatient = await this.patient.findUnique({
+      where: { id },
+    });
+    if (!findPatient)
+      throw new HttpException(409, 'Paciente inexistente');
+
+    return findPatient;
+  }
+
+  public async setPatientProfile(
+    id: number,
+    patientData: CreatePatientDto
+  ): Promise<Patient> {
+    if (isEmpty(patientData))
+      throw new HttpException(400, 'Nenhum dado foi informado');
+    try {
+        const updatePatient = await this.patient.update({
+            where: { id },
+            data: { ...patientData },
+        });
+
+        return updatePatient;
+    } catch (error) {
+        throw new PrismaException(error, 'Paciente');
+    }
   }
 }
 

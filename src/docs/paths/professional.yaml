@@ -43,6 +43,17 @@ paths:
           description: 'Operação realizada com sucesso'
       security:
         - bearer: []
+  /professionals/profile:
+    get:
+      tags: ['Profissional']
+      summary: Recuperar dados do profissional
+      description: 'Rota responsável por recuperar dados do perfil do profissional'
+      operationId: professionals/profile
+      responses:
+        '200':
+          description: 'Operação realizada com sucesso'
+      security:
+        - bearer: []
 components:
   schemas:
     Professional:

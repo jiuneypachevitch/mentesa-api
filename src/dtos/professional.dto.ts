@@ -10,14 +10,15 @@ export class UpdateProfessionalDto {
   public crp: string;
 
   @IsString()
-  @Length(11, 15)
+  @Length(11, 15, { message: 'telefone deve conter de 11 a 15 dígitos' })
   public cellphone: string;
 
   @IsString()
-  @Length(3, 20)
+  @Length(3, 20, { message: 'abordagem deve conter de 3 a 20 caracteres' })
   public approach: string;
 
   @IsEmail({}, { message: 'email é inválido' })
   @MaxLength(100, { message: 'email excede o máximo de 100 caracteres' })
   public email: string;
 }
+
