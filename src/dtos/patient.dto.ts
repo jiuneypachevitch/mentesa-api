@@ -23,7 +23,7 @@ export class CreatePatientDto {
   public email: string;
 
   @IsString()
-  @Length(11, 15, { message: 'cpf deve conter de 11 a 15 dígitos' })
+  @Length(11, 15, { message: 'telefone deve conter de 11 a 15 dígitos' })
   public cellphone: string;
 
   @IsString()
