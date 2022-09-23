@@ -1,19 +1,26 @@
 import { NextFunction, Request, Response } from 'express';
 import { CreateResourceDto, UpdateResourceDto } from '@dtos/resource.dto';
 import { ResourceService } from '@services/resource.service';
-import { HttpException } from '@exceptions/HttpException';
+import { RequestWithUser } from '@/interfaces/auth.interface';
 
 class ResourceController {
-    public resourceService = new ResourceService();
+  public resourceService = new ResourceService();
 
-  public create = async (req: Request, res: Response, next: NextFunction) => {
+  public create = async (
+    req: RequestWithUser,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
       const resourceData: CreateResourceDto = req.body;
-      const resource = await this.resourceService.create(resourceData, req.professional.id);
+      const resource = await this.resourceService.create(
+        resourceData,
+        req.professional.id
+      );
 
       res.status(201).json({
         data: {
-          resource
+          resource,
         },
         message: 'created',
       });
@@ -22,30 +29,42 @@ class ResourceController {
     }
   };
 
-  public update = async (req: Request, res: Response, next: NextFunction) => {
+  public update = async (
+    req: RequestWithUser,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
       const resourceData: UpdateResourceDto = req.body;
       const { id } = req.params;
-      const resource = await this.resourceService.update(resourceData, +id, req.professional.id);
+      const resource = await this.resourceService.update(
+        resourceData,
+        +id,
+        req.professional.id
+      );
 
-      res.status(200).json({ 
-        data: { 
-          resource 
-        }, 
-        message: 'updated' 
+      res.status(200).json({
+        data: {
+          resource,
+        },
+        message: 'updated',
       });
     } catch (error) {
       next(error);
     }
   };
 
-  public listAll = async (req: Request, res: Response, next: NextFunction) => {
+  public listAll = async (
+    req: RequestWithUser,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
       const resource = await this.resourceService.listAll(req.professional.id);
 
       res.status(200).json({
         data: {
-          resource
+          resource,
         },
         message: 'listed',
       });
@@ -54,23 +73,49 @@ class ResourceController {
     }
   };
 
-  public getOne = async (req: Request, res: Response, next: NextFunction) => {
+  public getOne = async (
+    req: RequestWithUser,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
       const { id } = req.params;
-      const resource = await this.resourceService.getOne(+id, req.professional.id);
-      
-      res.status(200).json(resource ? { data: { resource }, message: 'listed'} : { message: 'Recurso não encontrado'});
+      const resource = await this.resourceService.getOne(
+        +id,
+        req.professional.id
+      );
+
+      res
+        .status(200)
+        .json(
+          resource
+            ? { data: { resource }, message: 'listed' }
+            : { message: 'Recurso não encontrado' }
+        );
     } catch (error) {
       next(error);
     }
   };
 
-  public delete = async (req: Request, res: Response, next: NextFunction) => {
+  public delete = async (
+    req: RequestWithUser,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
       const { id } = req.params;
-      const resource = await this.resourceService.delete(+id, req.professional.id);
+      const resource = await this.resourceService.delete(
+        +id,
+        req.professional.id
+      );
 
-      res.status(200).json(resource ? { data: { resource }, message: 'deleted' } : { message: 'Recurso não encontrado' });
+      res
+        .status(200)
+        .json(
+          resource
+            ? { data: { resource }, message: 'deleted' }
+            : { message: 'Recurso não encontrado' }
+        );
     } catch (error) {
       next(error);
     }

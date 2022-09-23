@@ -1,28 +1,19 @@
-import {
-  IsNumber,
-  IsString,
-  IsEmail,
-  MaxLength,
-  Length,
-  IsOptional,
-} from "class-validator";
-
+import { IsNumber, IsString, MaxLength, IsOptional } from 'class-validator';
 
 export class CreateSessionDto {
-  @MaxLength(150, { message: "assunto excede o máximo de 150 caracteres" })
-  @IsString({ message: "assunto deve ser do tipo string" })
+  @MaxLength(150, { message: 'assunto excede o máximo de 150 caracteres' })
+  @IsString({ message: 'assunto deve ser do tipo string' })
   subject: string;
 
-  @IsNumber({ message: "duração deve ser do tipo inteiro" })
+  @IsNumber()
   duration: number;
 
-  @IsNumber({ message: "Id do agendamento deve ser do tipo inteiro" })
+  @IsNumber()
   scheduleId: number;
 
-  @IsNumber({ message: "Id do recurso deve ser do tipo inteiro" })
+  @IsNumber()
   resourceId: number;
 }
-
 
 export class UpdateSessionDto extends CreateSessionDto {
   @IsOptional()
@@ -34,4 +25,3 @@ export class UpdateSessionDto extends CreateSessionDto {
   @IsOptional()
   resourceId: number;
 }
-

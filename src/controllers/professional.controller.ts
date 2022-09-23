@@ -48,7 +48,7 @@ class ProfessionalController {
   };
 
   public getProfessionalProfile = async (
-    req: Request,
+    req: RequestWithUser,
     res: Response,
     next: NextFunction
   ): Promise<void> => {
@@ -58,16 +58,14 @@ class ProfessionalController {
           req.professional.id
         );
 
-      res
-        .status(200)
-        .json({ data: { professional }, message: 'profile' });
+      res.status(200).json({ data: { professional }, message: 'profile' });
     } catch (error) {
       next(error);
     }
   };
 
   public setProfessionalProfile = async (
-    req: Request,
+    req: RequestWithUser,
     res: Response,
     next: NextFunction
   ): Promise<void> => {
@@ -78,9 +76,7 @@ class ProfessionalController {
           req.body
         );
 
-      res
-        .status(200)
-        .json({ data: { professional }, message: 'profile' });
+      res.status(200).json({ data: { professional }, message: 'profile' });
     } catch (error) {
       next(error);
     }

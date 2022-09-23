@@ -1,9 +1,9 @@
-import { CreateResourceDto, UpdateResourceDto } from "@dtos/resource.dto";
-import { HttpException } from "@exceptions/HttpException";
-import { PrismaException } from "@exceptions/PrismaException";
-import { isEmpty } from "@utils/util";
-import client from "@/prisma/client";
-import { Resource } from "@prisma/client";
+import { CreateResourceDto, UpdateResourceDto } from '@dtos/resource.dto';
+import { HttpException } from '@exceptions/HttpException';
+import { PrismaException } from '@exceptions/PrismaException';
+import { isEmpty } from '@utils/util';
+import client from '@/prisma/client';
+import { Resource } from '@prisma/client';
 
 class ResourceService {
   private resource = client.resource;
@@ -13,7 +13,7 @@ class ResourceService {
     professionalId: number
   ): Promise<Resource> => {
     if (isEmpty(resourceData))
-      throw new HttpException(400, "Nenhum dado foi informado");
+      throw new HttpException(400, 'Nenhum dado foi informado');
     try {
       const createResourceData = await this.resource.create({
         data: {
@@ -24,7 +24,7 @@ class ResourceService {
       });
       return createResourceData;
     } catch (error) {
-      throw new PrismaException(error, "Recurso");
+      throw new PrismaException(error, 'Recurso');
     }
   };
 
@@ -32,9 +32,9 @@ class ResourceService {
     resourceData: UpdateResourceDto,
     id: number,
     professionalId: number
-  ): Promise<number> => {
+  ): Promise<Resource> => {
     if (isEmpty(resourceData))
-      throw new HttpException(400, "Nenhum dado foi informado");
+      throw new HttpException(400, 'Nenhum dado foi informado');
 
     try {
       const updateResourceData = await this.resource.update({
@@ -50,11 +50,11 @@ class ResourceService {
       });
       return updateResourceData;
     } catch (error) {
-      throw new PrismaException(error, "Recurso");
+      throw new PrismaException(error, 'Recurso');
     }
   };
 
-  public listAll = async (professionalId: number): Promise<Resource>[] => {
+  public listAll = async (professionalId: number): Promise<Resource[]> => {
     try {
       const listResourceData = await this.resource.findMany({
         where: {
@@ -63,7 +63,7 @@ class ResourceService {
       });
       return listResourceData;
     } catch (error) {
-      throw new PrismaException(error, "Recurso");
+      throw new PrismaException(error, 'Recurso');
     }
   };
 
@@ -83,7 +83,7 @@ class ResourceService {
 
       return resourceData;
     } catch (error) {
-      throw new PrismaException(error, "Recurso");
+      throw new PrismaException(error, 'Recurso');
     }
   };
 
@@ -102,7 +102,7 @@ class ResourceService {
       });
       return resourceData;
     } catch (error) {
-      throw new PrismaException(error, "Recurso");
+      throw new PrismaException(error, 'Recurso');
     }
   };
 }
