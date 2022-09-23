@@ -99,39 +99,33 @@ class PatientController {
   };
 
   public getPatientProfile = async (
-    req: Request,
+    req: RequestWithUser,
     res: Response,
     next: NextFunction
   ): Promise<void> => {
     try {
-      const patient =
-        await this.patientService.getPatientProfile(
-          req.patient.id
-        );
+      const patient = await this.patientService.getPatientProfile(
+        req.patient.id
+      );
 
-      res
-        .status(200)
-        .json({ data: { patient }, message: 'profile' });
+      res.status(200).json({ data: { patient }, message: 'profile' });
     } catch (error) {
       next(error);
     }
   };
 
   public setPatientProfile = async (
-    req: Request,
+    req: RequestWithUser,
     res: Response,
     next: NextFunction
   ): Promise<void> => {
     try {
-      const patient =
-        await this.patientService.setPatientProfile(
-          req.patient.id,
-          req.body
-        );
+      const patient = await this.patientService.setPatientProfile(
+        req.patient.id,
+        req.body
+      );
 
-      res
-        .status(200)
-        .json({ data: { patient }, message: 'profile' });
+      res.status(200).json({ data: { patient }, message: 'profile' });
     } catch (error) {
       next(error);
     }
