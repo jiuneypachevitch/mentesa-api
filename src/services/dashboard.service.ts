@@ -19,8 +19,6 @@ class DashboardService {
   ): Promise<IDashboard> {
     if (!userId) throw new HttpException(400, "Usuário não informado");
 
-    console.log(userId);
-    console.log(admin);
     const schedules = client.schedule;
     const patients = client.patient;
 

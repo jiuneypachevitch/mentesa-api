@@ -1,9 +1,9 @@
-import { Professional } from '@prisma/client';
-import { HttpException } from '@exceptions/HttpException';
-import { PrismaException } from '@exceptions/PrismaException';
-import { isEmpty } from '@utils/util';
-import { UpdateProfessionalDto } from '@/dtos/professional.dto';
-import client from '@/prisma/client';
+import { Professional } from "@prisma/client";
+import { HttpException } from "@exceptions/HttpException";
+import { PrismaException } from "@exceptions/PrismaException";
+import { isEmpty } from "@utils/util";
+import { UpdateProfessionalDto } from "@/dtos/professional.dto";
+import client from "@/prisma/client";
 
 class ProfessionalService {
   public professional = client.professional;
@@ -12,14 +12,14 @@ class ProfessionalService {
     professionalId: number
   ): Promise<Professional> {
     if (isEmpty(professionalId))
-      throw new HttpException(400, 'Id do profissional não foi informado');
+      throw new HttpException(400, "Id do profissional não foi informado");
 
     const findProfessional: Professional = await this.professional.findUnique({
       where: { id: professionalId },
     });
 
     if (!findProfessional)
-      throw new HttpException(409, 'Profissional inexistente');
+      throw new HttpException(409, "Profissional inexistente");
 
     return findProfessional;
   }
@@ -29,14 +29,14 @@ class ProfessionalService {
     professionalData: UpdateProfessionalDto
   ): Promise<Professional> {
     if (isEmpty(professionalData))
-      throw new HttpException(400, 'Nenhum dado foi informado');
+      throw new HttpException(400, "Nenhum dado foi informado");
 
     let findProfessional: Professional = await this.professional.findUnique({
       where: { id: professionalId },
     });
 
     if (!findProfessional)
-      throw new HttpException(409, 'Profissional inexistente');
+      throw new HttpException(409, "Profissional inexistente");
 
     findProfessional = await this.professional.findFirst({
       where: { id: { not: professionalId }, crp: professionalData.crp },
@@ -58,14 +58,14 @@ class ProfessionalService {
 
   public async getProfessionalProfile(id: number): Promise<Professional> {
     if (isEmpty(id))
-      throw new HttpException(400, 'Id do profissional não foi informado');
+      throw new HttpException(400, "Id do profissional não foi informado");
 
     const findProfessional = await this.professional.findUnique({
       where: { id },
     });
 
     if (!findProfessional)
-      throw new HttpException(409, 'Profissional inexistente');
+      throw new HttpException(409, "Profissional inexistente");
 
     return findProfessional;
   }
@@ -75,17 +75,17 @@ class ProfessionalService {
     professionalData: UpdateProfessionalDto
   ): Promise<Professional> {
     if (isEmpty(professionalData))
-      throw new HttpException(400, 'Nenhum dado foi informado');
-console.log('professionalData', professionalData);
-    try {
-        const updateProfessional = await this.professional.update({
-            where: { id },
-            data: { ...professionalData },
-        });
+      throw new HttpException(400, "Nenhum dado foi informado");
 
-        return updateProfessional;
+    try {
+      const updateProfessional = await this.professional.update({
+        where: { id },
+        data: { ...professionalData },
+      });
+
+      return updateProfessional;
     } catch (error) {
-        throw new PrismaException(error, 'Profissional');
+      throw new PrismaException(error, "Profissional");
     }
   }
 }

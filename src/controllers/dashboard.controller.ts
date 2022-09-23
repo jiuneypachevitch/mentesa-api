@@ -10,8 +10,6 @@ class DashboardController {
     res: Response,
     next: NextFunction
   ) => {
-    console.log(req);
-
     try {
       const isAdmin = req.professional ? true : false;
 
